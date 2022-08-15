@@ -1,23 +1,63 @@
-// import { createGlobalStyle } from "styled-components";
+import axios from "axios";
+import { useState } from "react";
 import Button from "./Button";
 import CancelButton from "./CancelButton";
-import Container from "./styles/Container.styled";
+// import Container from "./styles/Container.styled";
+import FormContainer from "./styles/FormContainer.styled";
+const baseURL = `http://localhost:3001/person`;
 
-const PersonForm = ({
-    onSubmit,
-    handleNameInputChange,
-    newName,
-    handleNumInputChange,
-    newNumber,
-}) => {
+const PersonForm = () => {
+    const [weight, setWeight] = useState("");
+    const [date, setDate] = useState("2000-01-01");
+    const [height, setHeight] = useState("");
+    const [sex, setSex] = useState("");
+
+    const handleSexChange = (e) => {
+        setSex(e.target.value);
+        console.log(`form value is ${e.target.value} props value is ${sex}`);
+    };
+
+    const calculateAge = (date) => {
+        const now = new Date();
+        date = new Date(date);
+        const diff = Math.abs(now - date);
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+        return age;
+    };
+
+    const calculateBMI = (weight, height) => {
+        const BMI = Math.round((weight / (height / 100) ** 2) * 10) / 10;
+        return BMI;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const details = {
+            sex,
+            date,
+            weight,
+            height,
+            age: calculateAge(date),
+            BMI: calculateBMI(weight, height),
+        };
+        console.table(details);
+        axios.post(baseURL, details);
+    };
+
     return (
-        <Container>
-            <form onSubmit={onSubmit}>
+        <div>
+            <FormContainer onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>Sex</legend>
                     <label htmlFor="male">
                         Male
-                        <input type="radio" id="male" name="sex" value="male" />
+                        <input
+                            type="radio"
+                            id="male"
+                            name="sex"
+                            value="male"
+                            onChange={(e) => handleSexChange(e)}
+                        />
                     </label>{" "}
                     <label htmlFor="female">
                         Female
@@ -26,34 +66,38 @@ const PersonForm = ({
                             id="female"
                             name="sex"
                             value="Female"
+                            onChange={(e) => handleSexChange(e)}
                         />
                     </label>{" "}
                 </fieldset>
 
                 <label>
-                    Age{" "}
+                    Date{" "}
                     <input
-                        onChange={(e) => e.target.value}
-                        value={""}
+                        required
+                        onChange={(e) => setDate(e.target.value)}
+                        value={date}
                         type={"date"}
                     />
                 </label>
-                <label>
-                    Height:
-                    <input
-                        type={"number"}
-                        onChange={handleNumInputChange}
-                        value={newNumber}
-                    />
-                </label>
-                <label>
-                    Weight:
-                    <input
-                        type={"number"}
-                        onChange={handleNumInputChange}
-                        value={newNumber}
-                    />
-                </label>
+                <div>
+                    <label>
+                        Height (cm):
+                        <input
+                            type={"number"}
+                            onChange={(e) => setHeight(e.target.value)}
+                            value={height}
+                        />
+                    </label>
+                    <label>
+                        Weight (Kg):
+                        <input
+                            type={"number"}
+                            onChange={(e) => setWeight(e.target.value)}
+                            value={weight}
+                        />
+                    </label>
+                </div>
                 <div>
                     <Button Primary type={"submit"} text={"Calculate"} />
                     <CancelButton
@@ -62,8 +106,8 @@ const PersonForm = ({
                         text={"Clear"}
                     />
                 </div>
-            </form>
-        </Container>
+            </FormContainer>
+        </div>
     );
 };
 

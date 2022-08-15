@@ -1,98 +1,44 @@
-import React, { useState } from "react";
-import Button from "./components/Button";
-import CancelButton from "./components/CancelButton";
-// import PersonForm from "./components/PersonForm";
-import Container from "./components/styles/Container.styled";
+// import React, { useState } from "react";
+// import Button from "./components/Button";
+// import CancelButton from "./components/CancelButton";
+import BmiInfo from "./components/BmiInfo";
+import DataCard from "./components/DataCard";
+import LoginPage from "./components/LoginPage";
+import PersonForm from "./components/PersonForm";
+import InfoContainer from "./components/styles/InfoContainer";
+import MeasurementDiv from "./components/styles/MeasurementDiv";
+import QuotesCard from "./components/QuotesCard";
+import FlexColumn from "./components/styles/FlexColumn";
+// import axios from "axios";
+// import Container from "./components/styles/Container.styled";
+// const baseURL = `http://localhost:3001/person`;
 
 const App = () => {
-    // const [persons, setPersons] = useState([]);
-    // const [name, setName] = useState("");
-    const [age, setAge] = useState();
-    const [weight, setWeight] = useState();
-    const [date, setDate] = useState();
-    const [height, setHeight] = useState();
-    const [sex, setSex] = useState("");
-
-    const handleSexChange = (e) => {
-        setSex(e.target.value);
-        console.log(`form value is ${e.target.value} props value is ${sex}`);
-    };
-
-    const handleChange = (e) => {
-        console.log(e.target.value);
-    };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const details = {
-            sex,
-        };
-        console.log(details);
-    };
-
     return (
-        <div>
-            {/* <PersonForm /> */}
-            <Container>
-                <form onSubmit={handleSubmit}>
-                    <fieldset>
-                        <legend>Sex</legend>
-                        <label htmlFor="male">
-                            Male
-                            <input
-                                type="radio"
-                                id="male"
-                                name="sex"
-                                value="male"
-                                onChange={(e) => handleSexChange(e)}
-                            />
-                        </label>{" "}
-                        <label htmlFor="female">
-                            Female
-                            <input
-                                type="radio"
-                                id="female"
-                                name="sex"
-                                value="Female"
-                                onChange={(e) => handleSexChange(e)}
-                            />
-                        </label>{" "}
-                    </fieldset>
+        <>
+            <FlexColumn>
+                <InfoContainer>
+                    <MeasurementDiv>
+                        <DataCard name={"Height"} value={`${109} cm`} />
+                        <DataCard primary name={"Weight"} value={`${80} Kg`} />
+                    </MeasurementDiv>
+                    <BmiInfo />
+                </InfoContainer>
+                <QuotesCard
+                    quote={
+                        " Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. I and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+                    }
+                />
+                <QuotesCard
+                    quote={
+                        " Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. I and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+                    }
+                />
 
-                    <label>
-                        Age{" "}
-                        <input
-                            onChange={handleChange}
-                            value={date}
-                            type={"date"}
-                        />
-                    </label>
-                    <label>
-                        Height:
-                        <input
-                            type={"number"}
-                            onChange={handleChange}
-                            value={height}
-                        />
-                    </label>
-                    <label>
-                        Weight:
-                        <input
-                            type={"number"}
-                            onChange={handleChange}
-                            value={weight}
-                        />
-                    </label>
-                    <div>
-                        <Button Primary type={"submit"} text={"Calculate"} />
-                        <CancelButton
-                            type={"reset"}
-                            value={"reset"}
-                            text={"Clear"}
-                        />
-                    </div>
-                </form>
-            </Container>
-        </div>
+                {/* <PersonForm /> */}
+                {/* <LoginPage /> */}
+            </FlexColumn>
+        </>
     );
 };
 

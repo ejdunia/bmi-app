@@ -5,7 +5,6 @@ const StyledCancelButton = styled(StyledButton)`
     border-color: tomato;
     color: red;
     font-weight: bold;
-    cursor: pointer;
 `;
 
 const CancelButton = ({ type, value, text }) => {

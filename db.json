@@ -1,19 +1,85 @@
 {
-  "posts": [
+  "person": [
     {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
-  "comments": [
+      "sex": "male",
+      "date": "2000-01-01",
+      "weight": "78",
+      "height": "180",
+      "age": 22,
+      "BMI": 24.1,
+      "id": 1
+    },
     {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "sex": "",
+      "date": "2000-01-01",
+      "weight": "21",
+      "height": "21",
+      "age": 22,
+      "BMI": 476.2,
+      "id": 2
+    },
+    {
+      "sex": "male",
+      "date": "2000-01-01",
+      "weight": "78",
+      "height": "180",
+      "age": 22,
+      "BMI": 24.1,
+      "id": 3
+    },
+    {
+      "sex": "",
+      "date": "2000-01-01",
+      "weight": "",
+      "height": "",
+      "age": 22,
+      "BMI": null,
+      "id": 4
+    },
+    {
+      "sex": "",
+      "date": "2000-01-01",
+      "weight": "",
+      "height": "",
+      "age": 22,
+      "BMI": null,
+      "id": 5
+    },
+    {
+      "sex": "",
+      "date": "2000-01-01",
+      "weight": "",
+      "height": "",
+      "age": 22,
+      "BMI": null,
+      "id": 6
+    },
+    {
+      "sex": "",
+      "date": "2000-01-01",
+      "weight": "",
+      "height": "",
+      "age": 22,
+      "BMI": null,
+      "id": 7
+    },
+    {
+      "sex": "",
+      "date": "2000-01-01",
+      "weight": "",
+      "height": "",
+      "age": 22,
+      "BMI": null,
+      "id": 8
+    },
+    {
+      "sex": "",
+      "date": "2000-01-01",
+      "weight": "",
+      "height": "",
+      "age": 22,
+      "BMI": null,
+      "id": 9
     }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }
