@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const QuoteStyle = styled.div`
     background-color: #d0fbff;
-    max-width: 400px;
+    max-width: 300px;
     min-height: 50px;
     max-height: 300px;
     height: 150px;

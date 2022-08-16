@@ -21,7 +21,7 @@ const Line = styled.div`
     justify-content: space-between;
 `;
 const BMICard = styled.div`
-    width: 250px;
+    width: 300px;
     background-color: #4a4949;
     padding: 15px;
     box-sizing: border-box;

@@ -26,6 +26,8 @@ import {
 import MainContainer from "./components/styles/MainContainer";
 import FoodTrackerBox from "./components/styles/FoodTrackerBox";
 import SearchBar from "./components/SearchBar";
+import NutriTable from "./components/NutriTable";
+import TableContainer from "./components/styles/TableContainer";
 
 // const baseURL = `http://localhost:3001/person`;
 ChartJS.register(
@@ -140,6 +142,9 @@ const App = () => {
                         </Container>
                         <FoodTrackerBox>
                             <SearchBar />
+                            <TableContainer>
+                                <NutriTable />
+                            </TableContainer>
                         </FoodTrackerBox>
                     </FlexColumn>
                 </DashboardContainer>
