@@ -4,7 +4,7 @@ import Ruler from "./Ruler";
 
 const DataCardHolder = styled.div`
     display: flex;
-    width: 220px;
+    max-width: 250px;
     height: 90px;
     color: #374151;
     box-sizing: border-box;

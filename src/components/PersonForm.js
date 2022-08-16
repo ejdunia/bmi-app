@@ -84,7 +84,10 @@ const PersonForm = () => {
                     <label>
                         Height (cm):
                         <input
+                            required
                             type={"number"}
+                            min="10"
+                            max="272"
                             onChange={(e) => setHeight(e.target.value)}
                             value={height}
                         />
@@ -92,6 +95,9 @@ const PersonForm = () => {
                     <label>
                         Weight (Kg):
                         <input
+                            required
+                            min="1"
+                            max="635"
                             type={"number"}
                             onChange={(e) => setWeight(e.target.value)}
                             value={weight}

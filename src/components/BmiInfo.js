@@ -24,7 +24,6 @@ const BMICard = styled.div`
     width: 250px;
     background-color: #4a4949;
     padding: 15px;
-    /* height:218px; */
     box-sizing: border-box;
     color: wheat;
     border-radius: 10px;

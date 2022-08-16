@@ -3,13 +3,11 @@ import styled from "styled-components";
 const FlexColumn = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: space-; */
     align-items: center;
     border-radius: 20px;
-    margin: 10px;
+    margin: 20px;
     background: #1e293b;
-    width: 500px;
-    padding: 20px;
 `;
 
 export default FlexColumn;
