@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 const BMILine = styled.div`
     /* background: rgb(167, 217, 235); */
@@ -62,16 +61,17 @@ const BmiInfo = ({ BMI }) => {
         <BMICard>
             <h4>Body Mass Index (BMI) </h4>
             <div>
-                <p>{(BMI = 24.9)}</p>
+                <p>{BMI}</p>
             </div>
             <label htmlFor="bmi">
                 <Slider
                     type={"range"}
                     id={"bmi"}
+                    value={BMI}
                     name={"bmi"}
                     min={15}
                     max={40}
-                    // value={24}
+                    disabled
                 ></Slider>
             </label>
             <BMILine></BMILine>

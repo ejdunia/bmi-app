@@ -1,44 +1,46 @@
 import NutriItem from "./NutriItem";
-
 import React from "react";
 import styled from "styled-components";
+
 const StyledTable = styled.table`
-    position: absolute;
     top: 40px;
+    border-radius: 20px;
+    width: 90%;
+    border-collapse: collapse;
     thead {
         background: #4a4949;
         color: wheat;
         position: sticky;
+        padding: 20px;
+        border-radius: 20px;
     }
     th {
-        /* padding: 20px 15px; */
         text-align: left;
         font-weight: 500;
         font-size: 12px;
         text-transform: uppercase;
+        border-radius: 20px;
     }
     td {
-        padding: 2px;
         text-align: center;
         vertical-align: middle;
         font-weight: 300;
         font-size: 15px;
         border-bottom: solid 1px rgba(255, 255, 255, 0.1);
     }
-    width: 85%;
-    border-collapse: collapse;
+
     tbody tr:nth-child(odd) {
-        background: #eee;
+        background: #f8debd;
+    }
+    tbody tr:nth-child(even) {
+        background: #1e293b;
+        color: wheat;
+    }
+    tbody {
     }
     img {
         width: 10px;
     }
-    button {
-        border-radius: 10px;
-        width: auto;
-        /* background: #000; */
-    }
-    /* overflow: scroll; */
 `;
 
 const NutriTable = ({ NutriList, addTo, handleDelete }) => {
@@ -166,16 +168,16 @@ const NutriTable = ({ NutriList, addTo, handleDelete }) => {
     ];
     return (
         <StyledTable>
-            <thead>
-                <tr>
-                    <td>Name</td>
-                    <td>Fat(g)</td>
-                    <td>Carbs(g)</td>
-                    <td>Protien(g)</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </thead>
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Fat(g)</td>
+                        <td>Carbs(g)</td>
+                        <td>Protien(g)</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </thead>
 
             <tbody>
                 {NutriList.slice(2, 5).map((item) => (

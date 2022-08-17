@@ -6,44 +6,16 @@ import CancelButton from "./CancelButton";
 import FormContainer from "./styles/FormContainer.styled";
 const baseURL = `http://localhost:3001/person`;
 
-const PersonForm = () => {
-    const [weight, setWeight] = useState("");
-    const [date, setDate] = useState("2000-01-01");
-    const [height, setHeight] = useState("");
-    const [sex, setSex] = useState("");
-
-    const handleSexChange = (e) => {
-        setSex(e.target.value);
-        console.log(`form value is ${e.target.value} props value is ${sex}`);
-    };
-
-    const calculateAge = (date) => {
-        const now = new Date();
-        date = new Date(date);
-        const diff = Math.abs(now - date);
-        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-        return age;
-    };
-
-    const calculateBMI = (weight, height) => {
-        const BMI = Math.round((weight / (height / 100) ** 2) * 10) / 10;
-        return BMI;
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const details = {
-            sex,
-            date,
-            weight,
-            height,
-            age: calculateAge(date),
-            BMI: calculateBMI(weight, height),
-        };
-        console.table(details);
-        axios.post(baseURL, details);
-    };
-
+const PersonForm = ({
+    handleSexChange,
+    handleSubmit,
+    height,
+    weight,
+    date,
+    setHeight,
+    setWeight,
+    setDate
+}) => {
     return (
         <div>
             <FormContainer onSubmit={handleSubmit}>
@@ -56,7 +28,7 @@ const PersonForm = () => {
                             id="male"
                             name="sex"
                             value="male"
-                            onChange={(e) => handleSexChange(e)}
+                            onChange={handleSexChange}
                         />
                     </label>{" "}
                     <label htmlFor="female">
@@ -66,16 +38,16 @@ const PersonForm = () => {
                             id="female"
                             name="sex"
                             value="Female"
-                            onChange={(e) => handleSexChange(e)}
+                            onChange={handleSexChange}
                         />
                     </label>{" "}
                 </fieldset>
 
                 <label>
-                    Date{" "}
+                    Birth Date{" "}
                     <input
                         required
-                        onChange={(e) => setDate(e.target.value)}
+                        onChange={setDate}
                         value={date}
                         type={"date"}
                     />
@@ -88,7 +60,7 @@ const PersonForm = () => {
                             type={"number"}
                             min="10"
                             max="272"
-                            onChange={(e) => setHeight(e.target.value)}
+                            onChange={setHeight}
                             value={height}
                         />
                     </label>
@@ -99,7 +71,7 @@ const PersonForm = () => {
                             min="1"
                             max="635"
                             type={"number"}
-                            onChange={(e) => setWeight(e.target.value)}
+                            onChange={setWeight}
                             value={weight}
                         />
                     </label>

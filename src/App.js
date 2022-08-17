@@ -1,7 +1,6 @@
-// import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BmiInfo from "./components/BmiInfo";
 import DataCard from "./components/DataCard";
-// import LoginPage from "./components/LoginPage";
 import PersonForm from "./components/PersonForm";
 import { Doughnut } from "react-chartjs-2";
 import InfoContainer from "./components/styles/InfoContainer";
@@ -27,9 +26,8 @@ import MainContainer from "./components/styles/MainContainer";
 import FoodTrackerBox from "./components/styles/FoodTrackerBox";
 import SearchBar from "./components/SearchBar";
 import NutriTable from "./components/NutriTable";
-import TableContainer from "./components/styles/TableContainer";
+import axios from "axios";
 
-// const baseURL = `http://localhost:3001/person`;
 ChartJS.register(
     ArcElement,
     Tooltip,
@@ -40,27 +38,6 @@ ChartJS.register(
     LineElement,
     Title
 );
-
-export const pieChartData = {
-    labels: ["Protien", "Carbs", "Fat"],
-    datasets: [
-        {
-            label: "# of Votes",
-            data: [12, 19, 13],
-            backgroundColor: [
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(255, 206, 86, 0.2)",
-            ],
-            borderColor: [
-                "rgba(255, 99, 132, 1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-            ],
-            borderWidth: 1,
-        },
-    ],
-};
 
 export const options = {
     responsive: true,
@@ -76,34 +53,126 @@ export const options = {
     },
 };
 
-// here i can map the last 7 days chart for calories and stuff
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-
-export const data = {
-    labels,
-    datasets: [
-        {
-            label: "Dataset 1",
-            // the data is just an array like data : [1, 2, 3, etc]
-            data: [11, 27, 13, 4, 15, 26, 14],
-
-            borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-        },
-        {
-            label: "Dataset 2",
-            data: [14, 15, 17, 12, 16, 19, 12],
-            borderColor: "rgb(53, 162, 235)",
-            backgroundColor: "rgba(53, 162, 235, 0.5)",
-        },
-    ],
-};
 const App = () => {
+    const [personInfo, setPersonInfo] = useState({});
+    const [nutritionData, setNutritionData] = useState([]);
+    const [weight, setWeight] = useState("");
+    const [height, setHeight] = useState("");
+    const [date, setDate] = useState("2000-01-01");
+    const [sex, setSex] = useState("");
+    // const [labels, setLabels] = useState([]);
+
+    const handleSexChange = (e) => {
+        setSex(e.target.value);
+        console.log(`form value is ${e.target.value} props value is ${sex}`);
+    };
+    const handleHeight = (e) => {
+        setHeight(e.target.value);
+        console.log(height);
+    };
+
+    const handleWeight = (e) => {
+        setWeight(e.target.value);
+        console.log(height);
+    };
+    const HandleDate = (e) => {
+        setDate(e.target.value);
+    };
+    const calculateAge = (date) => {
+        const now = new Date();
+        date = new Date(date);
+        const diff = Math.abs(now - date);
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+        return age;
+    };
+
+    const calculateBMI = (weight, height) => {
+        const BMI = Math.round((weight / (height / 100) ** 2) * 10) / 10;
+        return BMI;
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const details = {
+            sex,
+            date,
+            weight,
+            height,
+            age: calculateAge(date),
+            BMI: calculateBMI(weight, height),
+        };
+        setPersonInfo(details);
+        console.table(details);
+        setWeight("");
+        setHeight("");
+        setDate("2000-01-01");
+    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get(
+                    `http://localhost:3001/nutrition_data`
+                );
+                setNutritionData(res.data[0]);
+                console.log(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const pieChartData = {
+        labels: ["Protien", "Carbs", "Fat"],
+        datasets: [
+            {
+                label: "# of Votes",
+                data: [12, 19, 13],
+                backgroundColor: [
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(255, 206, 86, 0.2)",
+                ],
+                borderColor: [
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+    // here i can map the last 7 days chart for calories and stuff
+    const labels = ["sd", "February", "March", "April", "May", "June", "July"];
+
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: "Protien",
+                data: [11, 27, 13, 4, 15, 26, 14],
+
+                borderColor: "rgb(255, 99, 132)",
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+            },
+            {
+                label: "Carbs",
+                data: [14, 15, 17, 12, 16, 19, 12],
+                borderColor: "rgb(53, 162, 235)",
+                backgroundColor: "rgba(53, 162, 235, 0.5)",
+            },
+            {
+                label: "Fat",
+                data: [24, 25, 27, 12, 36, 15, 19],
+                borderColor: "rgb(255, 206, 86, 1)",
+                backgroundColor: "rgba(255, 206, 86, 1)",
+            },
+        ],
+    };
+
     const quotes = [
         " Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         "I and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
     ];
-
     return (
         <>
             <MainContainer>
@@ -111,14 +180,31 @@ const App = () => {
                     <FlexColumn>
                         <InfoContainer>
                             <MeasurementDiv>
-                                <DataCard name={"Height"} value={`${109} cm`} />
+                                <DataCard
+                                    name={"Height"}
+                                    value={
+                                        `${personInfo.height}` === "undefined"
+                                            ? 0
+                                            : `${personInfo.height} cm`
+                                    }
+                                />
                                 <DataCard
                                     primary
                                     name={"Weight"}
-                                    value={`${80} Kg`}
+                                    value={
+                                        `${personInfo.weight}` === "undefined"
+                                            ? 0
+                                            : `${personInfo.weight} Kg`
+                                    }
                                 />
                             </MeasurementDiv>
-                            <BmiInfo />
+                            <BmiInfo
+                                BMI={
+                                    `${personInfo.BMI}` === "undefined"
+                                        ? 0
+                                        : personInfo.BMI
+                                }
+                            />
                         </InfoContainer>
 
                         <ChartContainer>
@@ -134,7 +220,16 @@ const App = () => {
 
                     <FlexColumn>
                         <Container>
-                            <PersonForm />
+                            <PersonForm
+                                handleSexChange={handleSexChange}
+                                handleSubmit={handleSubmit}
+                                weight={weight}
+                                height={height}
+                                date={date}
+                                setDate={HandleDate}
+                                setHeight={handleHeight}
+                                setWeight={handleWeight}
+                            />
                             <div>
                                 <QuotesCard quote={quotes[0]} />
                                 <QuotesCard primary quote={quotes[1]} />
@@ -142,9 +237,7 @@ const App = () => {
                         </Container>
                         <FoodTrackerBox>
                             <SearchBar />
-                            <TableContainer>
-                                <NutriTable />
-                            </TableContainer>
+                            <NutriTable />
                         </FoodTrackerBox>
                     </FlexColumn>
                 </DashboardContainer>
