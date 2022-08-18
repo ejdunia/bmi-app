@@ -11,6 +11,7 @@ import { Line } from "react-chartjs-2";
 import ChartContainer from "./components/styles/ChartContainer";
 import Container from "./components/styles/Container.styled";
 import DashboardContainer from "./components/styles/DashboardContainer";
+import NutriItem from "./components/NutriItem";
 import {
     Chart as ChartJS,
     ArcElement,
@@ -24,9 +25,11 @@ import {
 } from "chart.js";
 import MainContainer from "./components/styles/MainContainer";
 import FoodTrackerBox from "./components/styles/FoodTrackerBox";
+import StyledTable from "./components/styles/StyledTable";
 import SearchBar from "./components/SearchBar";
 import NutriTable from "./components/NutriTable";
 import axios from "axios";
+const rapidApiKey = process.env.REACT_APP_RAPID_API_KEY;
 
 ChartJS.register(
     ArcElement,
@@ -54,26 +57,107 @@ export const options = {
 };
 
 const App = () => {
+    const dummyData = [
+        {
+            id: 1,
+            name: "food Name",
+            calories: 0,
+            serving_size_g: 0,
+            fat_total_g: 0,
+            fat_saturated_g: 0,
+            protein_g: 0,
+            sodium_mg: 0,
+            potassium_mg: 0,
+            cholesterol_mg: 0,
+            carbohydrates_total_g: 0,
+            fiber_g: 0,
+            sugar_g: 0,
+        },
+        {
+            id: 2,
+            name: "food Name two",
+            calories: 0,
+            serving_size_g: 0,
+            fat_total_g: 0,
+            fat_saturated_g: 0,
+            protein_g: 0,
+            sodium_mg: 0,
+            potassium_mg: 0,
+            cholesterol_mg: 0,
+            carbohydrates_total_g: 0,
+            fiber_g: 0,
+            sugar_g: 0,
+        },
+    ];
     const [personInfo, setPersonInfo] = useState({});
+
+    const [nutriList, setNutriList] = useState([]);
+    const [nutriListEmpty, setNutriListEmpty] = useState(true);
     const [nutritionData, setNutritionData] = useState([]);
     const [weight, setWeight] = useState("");
     const [height, setHeight] = useState("");
     const [date, setDate] = useState("2000-01-01");
     const [sex, setSex] = useState("");
-    // const [labels, setLabels] = useState([]);
+    const [barOpened, setBarOpened] = useState(false);
+
+    const [searchInput, setSearchInput] = useState("");
+
+    const handleSearchInput = (e) => {
+        setSearchInput(e.target.value);
+    };
+
+    const onSearchFormSubmit = (e) => {
+        e.preventDefault();
+        setSearchInput("");
+        setBarOpened(false);
+        // After form submit, do what you want with the input value
+        console.log(`Form was submited with input: ${searchInput}`);
+        const options = {
+            method: "GET",
+            url: "https://nutrition-by-api-ninjas.p.rapidapi.com/v1/nutrition",
+            params: { query: searchInput },
+            headers: {
+                "X-RapidAPI-Key": rapidApiKey,
+                "X-RapidAPI-Host": "nutrition-by-api-ninjas.p.rapidapi.com",
+            },
+        };
+
+        axios
+            .request(options)
+            .then((response) => {
+                let exists = nutriList.some(
+                    (el) => el.name === response.data[0].name
+                );
+                if (!exists) {
+                    setNutriList(nutriList.concat(response.data));
+                }
+
+                setNutriListEmpty(false);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    // const deleteItem = (itemname) => {
+    //     // const url = `http://localhost:3001/names/${name}`;
+    //     console.log(itemname);
+    //     //       window.confirm(` id ${name} will be deleted`)
+    //     //           ? axios.delete(url).then((response) => {
+    //     //                 console.log(`${name} has been deleted`);
+    //     //             })
+    //     //           : alert("aborted");
+    // };
 
     const handleSexChange = (e) => {
         setSex(e.target.value);
-        console.log(`form value is ${e.target.value} props value is ${sex}`);
     };
     const handleHeight = (e) => {
         setHeight(e.target.value);
-        console.log(height);
     };
 
     const handleWeight = (e) => {
         setWeight(e.target.value);
-        console.log(height);
     };
     const HandleDate = (e) => {
         setDate(e.target.value);
@@ -101,25 +185,27 @@ const App = () => {
             BMI: calculateBMI(weight, height),
         };
         setPersonInfo(details);
-        console.table(details);
         setWeight("");
         setHeight("");
         setDate("2000-01-01");
     };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const res = await axios.get(
                     `http://localhost:3001/nutrition_data`
                 );
-                setNutritionData(res.data[0]);
-                console.log(res.data);
+                setNutritionData(res.data);
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
     }, []);
+
+    // console.log(nutritionData);
+    // console.log(nutritionData[0]);
 
     const pieChartData = {
         labels: ["Protien", "Carbs", "Fat"],
@@ -143,7 +229,6 @@ const App = () => {
     };
     // here i can map the last 7 days chart for calories and stuff
     const labels = ["sd", "February", "March", "April", "May", "June", "July"];
-
     const data = {
         labels,
         datasets: [
@@ -168,11 +253,18 @@ const App = () => {
             },
         ],
     };
+    const deleteItem = (itemname) => {
+        // const url = `http://localhost:3001/names/${name}`;
+        console.log(itemname);
+        setNutriList(nutriList.filter((item) => item.name !== itemname));
 
-    const quotes = [
-        " Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        "I and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    ];
+        //       window.confirm(` id ${name} will be deleted`)
+        //           ? axios.delete(url).then((response) => {
+        //                 console.log(`${name} has been deleted`);
+        //             })
+        //           : alert("aborted");
+    };
+
     return (
         <>
             <MainContainer>
@@ -208,12 +300,14 @@ const App = () => {
                         </InfoContainer>
 
                         <ChartContainer>
+                            <span></span>
                             <Doughnut
                                 data={pieChartData}
                                 options={{ maintainAspectRatio: false }}
                             />
                         </ChartContainer>
                         <ChartContainer>
+                            <span></span>
                             <Line options={options} data={data} />
                         </ChartContainer>
                     </FlexColumn>
@@ -231,13 +325,46 @@ const App = () => {
                                 setWeight={handleWeight}
                             />
                             <div>
-                                <QuotesCard quote={quotes[0]} />
-                                <QuotesCard primary quote={quotes[1]} />
+                                <QuotesCard />
+                                <QuotesCard />
                             </div>
                         </Container>
                         <FoodTrackerBox>
-                            <SearchBar />
-                            <NutriTable />
+                            <SearchBar
+                                onSearchSubmit={onSearchFormSubmit}
+                                barOpened={barOpened}
+                                setBarOpened={setBarOpened}
+                                input={searchInput}
+                                handleSearchInputChange={handleSearchInput}
+                            />
+                            {/* <NutriTable
+                                NutriList={
+                                    nutriListEmpty ? dummyData : nutriList
+                                }
+                            /> */}
+                            <StyledTable>
+                                <thead>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>Fat(g)</td>
+                                        <td>Carbs(g)</td>
+                                        <td>Protien(g)</td>
+                                        <td></td>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {nutriList.map((item) => (
+                                        <NutriItem
+                                            key={item.name}
+                                            item={item}
+                                            handleDelete={() => {
+                                                deleteItem(item.name);
+                                            }}
+                                        />
+                                    ))}
+                                </tbody>
+                            </StyledTable>
                         </FoodTrackerBox>
                     </FlexColumn>
                 </DashboardContainer>

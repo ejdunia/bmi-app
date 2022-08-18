@@ -1,10 +1,7 @@
-import axios from "axios";
-import { useState } from "react";
 import Button from "./Button";
 import CancelButton from "./CancelButton";
 // import Container from "./styles/Container.styled";
 import FormContainer from "./styles/FormContainer.styled";
-const baseURL = `http://localhost:3001/person`;
 
 const PersonForm = ({
     handleSexChange,
@@ -14,7 +11,7 @@ const PersonForm = ({
     date,
     setHeight,
     setWeight,
-    setDate
+    setDate,
 }) => {
     return (
         <div>

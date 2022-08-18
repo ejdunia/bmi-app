@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import addImage from "../assets/add.png";
 import cancelImage from "../assets/close.png";
 import StyledButton from "./styles/StyledButton.styled";
 
@@ -10,21 +9,15 @@ const ButtonIcon = styled(StyledButton)`
     min-height: 5px;
     border-radius: 20px;
     margin: 5px;
-
 `;
 
-const NutriItem = ({ item, addTo, handleDelete }) => {
+const NutriItem = ({ item, handleDelete }) => {
     return (
         <tr>
             <td>{item.name}</td>
             <td>{item.fat_total_g}</td>
             <td>{item.calories}</td>
             <td>{item.protein_g}</td>
-            <td>
-                <ButtonIcon onClick={addTo}>
-                    {<img src={addImage} alt="add " />}{" "}
-                </ButtonIcon>
-            </td>
             <td>
                 <ButtonIcon onClick={handleDelete}>
                     <img src={cancelImage} alt="cancel" />

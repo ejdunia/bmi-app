@@ -1,7 +1,13 @@
 import styled from "styled-components";
 
 const ChartContainer = styled.div`
-    padding: 3px;
+    & :first-child {
+        position: absolute;
+    }
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
     margin: 10px;
     border: 1px solid grey;
     background: #f3f4f6;
