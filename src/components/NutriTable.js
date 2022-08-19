@@ -1,21 +1,10 @@
 import NutriItem from "./NutriItem";
 import React from "react";
-import styled from "styled-components";
 import StyledTable from "./styles/StyledTable";
 
-const deleteItem = (itemname, nutriList) => {
-    // const url = `http://localhost:3001/names/${name}`;
-    console.log(nutriList);
-    console.log(itemname);
-    
-    //       window.confirm(` id ${name} will be deleted`)
-    //           ? axios.delete(url).then((response) => {
-    //                 console.log(`${name} has been deleted`);
-    //             })
-    //           : alert("aborted");
-};
 
-const NutriTable = ({ NutriList }) => {
+
+const NutriTable = ({ NutriList, deleteItem }) => {
     return (
         <StyledTable>
             <thead>
