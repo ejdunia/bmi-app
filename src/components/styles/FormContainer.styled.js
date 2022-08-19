@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 const FormContainer = styled.form`
     min-width: 250px;
-    padding: 20px;
+    padding: 30px;
+    margin-bottom: 10px;
     border-radius: 10px;
     background-color: #f8debd;
     color: #1e293b;

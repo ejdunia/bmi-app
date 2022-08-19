@@ -6,12 +6,17 @@ import { Chart, Doughnut } from "react-chartjs-2";
 import InfoContainer from "./components/styles/InfoContainer";
 import MeasurementDiv from "./components/styles/MeasurementDiv";
 import QuotesCard from "./components/QuotesCard";
+import QuotesCard2 from "./components/QuotesCard2";
 import FlexColumn from "./components/styles/FlexColumn";
 import { Line } from "react-chartjs-2";
 import ChartContainer from "./components/styles/ChartContainer";
 import Container from "./components/styles/Container.styled";
 import DashboardContainer from "./components/styles/DashboardContainer";
 import NutriItem from "./components/NutriItem";
+import CheckboxToggle from "./components/CheckBoxToggle";
+import Toggle2 from "./components/Toggle2";
+import ToggleContainer from "./components/ToggleContainer";
+
 import {
     Chart as ChartJS,
     ArcElement,
@@ -75,6 +80,8 @@ const App = () => {
             sugar_g: 0,
         },
     ];
+    const [showQuote1, setShowQuote1] = useState(true);
+    const [showQuote2, setShowQuote2] = useState(true);
     const todaysDate = new Date().toLocaleDateString();
     const baseURL = `http://localhost:3001/nutrition_data`;
     const [personInfo, setPersonInfo] = useState({});
@@ -335,6 +342,7 @@ const App = () => {
             console.log(err);
         }
     };
+
     const pieChartData = {
         labels: ["Calories", "Fat", "Protien"],
         datasets: [
@@ -392,6 +400,7 @@ const App = () => {
         <>
             <MainContainer>
                 <ToastContainer />
+
                 <DashboardContainer>
                     <FlexColumn>
                         <InfoContainer>
@@ -453,8 +462,25 @@ const App = () => {
                                 setWeight={handleWeight}
                             />
                             <div>
-                                <QuotesCard />
-                                <QuotesCard />
+                                <ToggleContainer>
+                                    <CheckboxToggle
+                                        onChange={() =>
+                                            setShowQuote1(!showQuote1)
+                                        }
+                                    />{" "}
+                                    <span>Toggle Tips</span>
+                                </ToggleContainer>
+                                <ToggleContainer>
+                                    <Toggle2
+                                        onToggleChange={() =>
+                                            setShowQuote2(!showQuote2)
+                                        }
+                                    />{" "}
+                                    <span>Toggle Motivation Tips</span>
+                                </ToggleContainer>
+                                {showQuote1 && <QuotesCard />}
+
+                                {showQuote2 && <QuotesCard2 />}
                             </div>
                         </Container>
                         <FoodTrackerBox>
