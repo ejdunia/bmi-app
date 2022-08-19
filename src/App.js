@@ -15,8 +15,6 @@ import DashboardContainer from "./components/styles/DashboardContainer";
 import NutriItem from "./components/NutriItem";
 import CheckboxToggle from "./components/CheckBoxToggle";
 import Toggle2 from "./components/Toggle2";
-import ToggleContainer from "./components/ToggleContainer";
-
 import {
     Chart as ChartJS,
     ArcElement,
@@ -35,6 +33,7 @@ import FoodTrackerBox from "./components/styles/FoodTrackerBox";
 import StyledTable from "./components/styles/StyledTable";
 import SearchBar from "./components/SearchBar";
 import axios from "axios";
+import ToggleContainer from "./components/ToggleContainer";
 import SaveButton from "./components/SaveButton";
 const rapidApiKey = process.env.REACT_APP_RAPID_API_KEY;
 
@@ -219,6 +218,12 @@ const App = () => {
                 // console.log(response.data);
                 if (response.data?.length === 0) {
                     toast("Nothing found, please try again");
+                    toast.update(id, {
+                        render: "",
+                        type: "info",
+                        isLoading: false,
+                        autoClose: 100,
+                    });
                 } else {
                     let exists = nutriTableList.some(
                         (el) => el.name === response.data[0]?.name
@@ -229,7 +234,7 @@ const App = () => {
                             render: "Done",
                             type: "success",
                             isLoading: false,
-                            autoClose: 1000,
+                            autoClose: 500,
                         });
                         setNutriTableList(nutriTableList.concat(response.data));
                     } else {
@@ -237,7 +242,7 @@ const App = () => {
                             render: `${response?.data[0]?.name} already exists`,
                             type: "info",
                             isLoading: false,
-                            autoClose: 1000,
+                            autoClose: 500,
                         });
                     }
                 }
@@ -467,8 +472,8 @@ const App = () => {
                                         onChange={() =>
                                             setShowQuote1(!showQuote1)
                                         }
-                                    />{" "}
-                                    <span>Toggle Tips</span>
+                                    />
+                                    <span>Toggle Quote 1</span>
                                 </ToggleContainer>
                                 <ToggleContainer>
                                     <Toggle2
@@ -476,7 +481,7 @@ const App = () => {
                                             setShowQuote2(!showQuote2)
                                         }
                                     />{" "}
-                                    <span>Toggle Motivation Tips</span>
+                                    <span>Toggle Quote 2</span>
                                 </ToggleContainer>
                                 {showQuote1 && <QuotesCard />}
 

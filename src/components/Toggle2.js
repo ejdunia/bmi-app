@@ -8,11 +8,11 @@ const Toggle2 = ({ onToggleChange }) => {
         <div>
             <CheckBoxWrapper>
                 <CheckBox
-                    id="checkbox"
+                    id="toggle"
                     type="checkbox"
                     onChange={onToggleChange}
                 />
-                <CheckBoxLabel htmlFor="checkbox" />
+                <CheckBoxLabel htmlFor="toggle" />
             </CheckBoxWrapper>
         </div>
     );
