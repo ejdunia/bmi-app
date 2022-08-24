@@ -3,7 +3,7 @@ import styled from "styled-components";
 const DashboardContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
-    /* align-items: center; */
+    align-items: center;
     justify-content: center;
     background: hsla(186, 33%, 94%, 1);
 

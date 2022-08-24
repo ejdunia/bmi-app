@@ -6,6 +6,7 @@ import refresh from "../assets/refresh.png";
 // const apiNinjasKey = process.env.REACT_APP_API_NINJAS_KEY;
 // const rapidApiKey = process.env.REACT_APP_RAPID_API_KEY;
 
+
 const QuoteStyle = styled.div`
     background-color: #d0fbff;
     max-width: 300px;

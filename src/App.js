@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import BmiInfo from "./components/BmiInfo";
 import DataCard from "./components/DataCard";
 import PersonForm from "./components/PersonForm";
-import { Chart, Doughnut } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import InfoContainer from "./components/styles/InfoContainer";
 import MeasurementDiv from "./components/styles/MeasurementDiv";
 import QuotesCard from "./components/QuotesCard";
@@ -79,10 +79,13 @@ const App = () => {
             sugar_g: 0,
         },
     ];
-    const [showQuote1, setShowQuote1] = useState(true);
-    const [showQuote2, setShowQuote2] = useState(true);
+    const [showQuote1, setShowQuote1] = useState(false);
+    const [showQuote2, setShowQuote2] = useState(false);
     const todaysDate = new Date().toLocaleDateString();
     const baseURL = `http://localhost:3001/nutrition_data`;
+
+    // todo put the form into one single objeect
+
     const [personInfo, setPersonInfo] = useState({});
     const [nutriTableList, setNutriTableList] = useState([]);
     const [nutriListEmpty, setNutriListEmpty] = useState(false);
@@ -91,6 +94,9 @@ const App = () => {
     const [height, setHeight] = useState("");
     const [date, setDate] = useState("2000-01-01");
     const [sex, setSex] = useState("");
+
+    //  see commment above
+
     const [barOpened, setBarOpened] = useState(false);
     const [pieData, setPieData] = useState([]);
 
@@ -100,108 +106,91 @@ const App = () => {
         setSearchInput(e.target.value);
     };
 
-    const updateTableData = (date) => {
-        const toUpdate = nutritionDBData.find((nutri) => nutri.date === date);
-        const id = toUpdate?.id;
+    const deleteItem = (itemname) => {
+        const toDelete = nutritionDBData.find(
+            (nutri) => nutri.date === todaysDate
+        );
+        const id = toDelete?.id;
         const url = `http://localhost:3001/nutrition_data/${id}`;
-        let updatedNutriList = [...toUpdate?.nutriList, ...nutriTableList];
-        updatedNutriList = [
-            ...new Map(
-                updatedNutriList.map((item) => [item["name"], item])
-            ).values(),
-        ];
-        console.log(updatedNutriList);
+        // console.log(id);
+        let updatedNutriList = nutriTableList.filter(
+            (item) => item.name !== itemname
+        );
 
+        setNutriTableList(updatedNutriList);
         const sentData = {
-            date,
+            date: todaysDate,
             nutriList: updatedNutriList,
         };
         console.log(sentData);
         axios
             .put(url, sentData)
             .then((response) => {
-                // console.log(response);
+                setPieChartData(response.data?.nutriList);
+                // pass in the response to the setPieChartData from
             })
             .catch((error) => console.log(error));
+        toast("deleted");
+        console.log(`${itemname} has been deleted`);
     };
 
-    const deleteItem = (itemname) => {
-        const date = new Date().toLocaleDateString();
+    const updateTableData = (date) => {
         const toUpdate = nutritionDBData.find((nutri) => nutri.date === date);
         const id = toUpdate?.id;
         const url = `http://localhost:3001/nutrition_data/${id}`;
-        // console.log(id);
-        setNutriTableList(
-            nutriTableList.filter((item) => item.name !== itemname)
-        );
-        // let updatedNutriList = [...toUpdate?.nutriList, ...nutriTableList];
-        let updatedNutriList = nutriTableList.filter(
-            (item) => item.name !== itemname
-        );
-
+        let updatedNutriList = [...toUpdate?.nutriList];
         updatedNutriList = [
             ...new Map(
                 updatedNutriList.map((item) => [item["name"], item])
             ).values(),
         ];
-        console.log(updatedNutriList);
 
         const sentData = {
             date,
-            nutriList: updatedNutriList,
+            nutriList: nutriTableList,
         };
-        // console.log(sentData);
+
+        console.log(nutriTableList);
         axios
             .put(url, sentData)
             .then((response) => {
-                console.log(response);
+                console.log(sentData);
+                setPieChartData(nutriTableList);
             })
             .catch((error) => console.log(error));
-        toast("deleted");
-        console.log(`${itemname} has been deleted`);
-        getPieChartData();
     };
 
     const saveTableData = () => {
         let date = new Date().toLocaleDateString();
-        let alreadyIncluded = nutritionDBData.some(
+        let alreadyIncluded = nutritionDBData.find(
             (nutri) => nutri.date === date
         );
+
         if (alreadyIncluded) {
+            console.log("included");
             updateTableData(date);
             return;
         } else if (nutriTableList.length === 0) {
             return;
         } else {
             // whatever is saved in the table gets pushed to the db if it isnt empty
-            const toastSaved = () =>
-                toast("Saved", {
-                    position: "top-center",
-                    autoClose: 500,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            toastSaved();
+
             const entry = {
-                date: date,
+                date: todaysDate,
                 nutriList: nutriTableList,
             };
-            console.log(entry);
-            axios.post(baseURL, entry);
+            axios
+                .post(baseURL, entry)
+                .then((response) => console.log(response));
+            toast("Saved");
         }
-        getPieChartData();
     };
 
     const onSearchFormSubmit = (e) => {
         e.preventDefault();
         setSearchInput("");
         setBarOpened(false);
-        // notify1();object
         // After form submit, do what you want with the input value
-        // console.log(`search was submited with input: ${searchInput}`);
         const options = {
             method: "GET",
             url: "https://nutrition-by-api-ninjas.p.rapidapi.com/v1/nutrition",
@@ -215,7 +204,6 @@ const App = () => {
         axios
             .request(options)
             .then((response) => {
-                // console.log(response.data);
                 if (response.data?.length === 0) {
                     toast("Nothing found, please try again");
                     toast.update(id, {
@@ -225,7 +213,7 @@ const App = () => {
                         autoClose: 100,
                     });
                 } else {
-                    let exists = nutriTableList.some(
+                    let exists = nutriTableList.find(
                         (el) => el.name === response.data[0]?.name
                     );
 
@@ -237,6 +225,7 @@ const App = () => {
                             autoClose: 500,
                         });
                         setNutriTableList(nutriTableList.concat(response.data));
+                        console.log(response.data);
                     } else {
                         toast.update(id, {
                             render: `${response?.data[0]?.name} already exists`,
@@ -297,55 +286,41 @@ const App = () => {
     };
 
     useEffect(() => {
-        let date = new Date().toLocaleDateString();
-
-        const fetchData = async () => {
+        // IIFE to fetch the data
+        (async () => {
             try {
                 const res = await axios.get(
                     `http://localhost:3001/nutrition_data`
                 );
                 setNutritionDBData(res.data);
-                // console.log(res.data);
                 const toDisplay = res.data?.find(
-                    (nutri) => nutri.date === date
+                    (nutri) => nutri.date === todaysDate
                 );
-
                 setNutriTableList(toDisplay.nutriList);
+                setPieChartData(toDisplay.nutriList);
             } catch (err) {
                 console.log(err);
             }
-        };
-        fetchData();
-    }, []);
+        })();
+    }, [todaysDate]);
 
-    useEffect(() => {
-        getPieChartData();
-    }, []);
-
-    const getPieChartData = async () => {
-        try {
-            const res = await axios.get(`http://localhost:3001/nutrition_data`);
-            const toDisplay = res.data?.find(
-                (nutri) => nutri.date === todaysDate
-            );
-
-            const val = toDisplay.nutriList.reduce(function (
-                previousValue,
-                currentValue
-            ) {
+    const setPieChartData = (pieDataArray) => {
+        const val = pieDataArray.reduce(
+            function (previousValue, currentValue) {
                 return {
-                    calories: previousValue.calories + currentValue.calories,
+                    calories:
+                        previousValue.calories + currentValue.calories + 0,
                     fat_total_g:
-                        previousValue.fat_total_g + currentValue.fat_total_g,
-                    protein_g: previousValue.protein_g + currentValue.protein_g,
+                        previousValue.fat_total_g +
+                        currentValue.fat_total_g +
+                        0,
+                    protein_g:
+                        previousValue.protein_g + currentValue.protein_g + 0,
                 };
-            });
-
-            console.log(val);
-            setPieData(Object.values(val));
-        } catch (err) {
-            console.log(err);
-        }
+            },
+            { calories: 0, fat_total_g: 0, protein_g: 0 }
+        );
+        setPieData(Object.values(val));
     };
 
     const pieChartData = {
@@ -355,6 +330,8 @@ const App = () => {
                 label: "# of Votes",
 
                 data: pieData,
+                // data: setTimeout(() => [12, 34, 54], 1000),
+                // data: [12, 34, 56],
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(54, 162, 235, 0.2)",
@@ -370,7 +347,15 @@ const App = () => {
         ],
     };
     const getLineCHartLabels = () => {
-        return ["sd", "February", "March", "April", "May", "June", "July"];
+        return [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "THursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+        ];
     };
     // here i can map the last 7 days chart for calories and stuff
 
@@ -439,7 +424,7 @@ const App = () => {
 
                         <ChartContainer>
                             <span></span>
-                            {pieData?.length > 1 && (
+                            {pieData?.length !== 1 && (
                                 <Doughnut
                                     data={pieChartData}
                                     options={{ maintainAspectRatio: false }}
@@ -456,16 +441,18 @@ const App = () => {
 
                     <FlexColumn>
                         <Container>
-                            <PersonForm
-                                handleSexChange={handleSexChange}
-                                handleSubmit={handleSubmit}
-                                weight={weight}
-                                height={height}
-                                date={date}
-                                setDate={HandleDate}
-                                setHeight={handleHeight}
-                                setWeight={handleWeight}
-                            />
+                            {false && (
+                                <PersonForm
+                                    handleSexChange={handleSexChange}
+                                    handleSubmit={handleSubmit}
+                                    weight={weight}
+                                    height={height}
+                                    date={date}
+                                    setDate={HandleDate}
+                                    setHeight={handleHeight}
+                                    setWeight={handleWeight}
+                                />
+                            )}
                             <div>
                                 <ToggleContainer>
                                     <CheckboxToggle
@@ -473,7 +460,7 @@ const App = () => {
                                             setShowQuote1(!showQuote1)
                                         }
                                     />
-                                    <span>Toggle Quote 1</span>
+                                    <span>Toggle Motivational Quote</span>
                                 </ToggleContainer>
                                 <ToggleContainer>
                                     <Toggle2
@@ -481,7 +468,7 @@ const App = () => {
                                             setShowQuote2(!showQuote2)
                                         }
                                     />{" "}
-                                    <span>Toggle Quote 2</span>
+                                    <span>Toggle Fitness quote</span>
                                 </ToggleContainer>
                                 {showQuote1 && <QuotesCard />}
 
