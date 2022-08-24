@@ -55,12 +55,12 @@
       "id": 2
     },
     {
-      "date": "19/08/2022",
+      "date": "16/08/2022",
       "nutriList": [],
       "id": 3
     },
     {
-      "date": "21/08/2022",
+      "date": "17/08/2022",
       "nutriList": [
         {
           "name": "chicken",
@@ -108,7 +108,7 @@
       "id": 4
     },
     {
-      "date": "22/08/2022",
+      "date": "18/08/2022",
       "nutriList": [
         {
           "name": "chips",
@@ -128,7 +128,7 @@
       "id": 5
     },
     {
-      "date": "23/08/2022",
+      "date": "19/08/2022",
       "nutriList": [
         {
           "name": "chicken",
@@ -162,7 +162,7 @@
       "id": 6
     },
     {
-      "date": "2/08/2022",
+      "date": "20/08/2022",
       "nutriList": [
         {
           "name": "chips",
@@ -182,52 +182,92 @@
       "id": 7
     },
     {
-      "date": "24/08/2022",
+      "date": "22/08/2022",
       "nutriList": [
         {
-          "name": "fish",
-          "calories": 129.2,
+          "name": "chicken",
+          "calories": 222.6,
           "serving_size_g": 100,
-          "fat_total_g": 2.7,
-          "fat_saturated_g": 0.9,
-          "protein_g": 26,
-          "sodium_mg": 57,
-          "potassium_mg": 203,
-          "cholesterol_mg": 56,
+          "fat_total_g": 12.9,
+          "fat_saturated_g": 3.7,
+          "protein_g": 23.7,
+          "sodium_mg": 72,
+          "potassium_mg": 179,
+          "cholesterol_mg": 92,
           "carbohydrates_total_g": 0,
           "fiber_g": 0,
           "sugar_g": 0
         },
         {
-          "name": "mango",
-          "calories": 61.6,
+          "name": "catfish",
+          "calories": 142.9,
           "serving_size_g": 100,
-          "fat_total_g": 0.4,
-          "fat_saturated_g": 0.1,
-          "protein_g": 0.8,
-          "sodium_mg": 0,
-          "potassium_mg": 14,
-          "cholesterol_mg": 0,
-          "carbohydrates_total_g": 14.8,
-          "fiber_g": 1.6,
-          "sugar_g": 13.6
-        },
-        {
-          "name": "beans",
-          "calories": 91.3,
-          "serving_size_g": 100,
-          "fat_total_g": 0.4,
-          "fat_saturated_g": 0.1,
-          "protein_g": 4.7,
-          "sodium_mg": 339,
-          "potassium_mg": 75,
-          "cholesterol_mg": 0,
-          "carbohydrates_total_g": 21.3,
-          "fiber_g": 4.1,
-          "sugar_g": 7.9
+          "fat_total_g": 7.3,
+          "fat_saturated_g": 1.6,
+          "protein_g": 18.6,
+          "sodium_mg": 120,
+          "potassium_mg": 244,
+          "cholesterol_mg": 65,
+          "carbohydrates_total_g": 0,
+          "fiber_g": 0,
+          "sugar_g": 0
         }
       ],
       "id": 8
+    },
+    {
+      "date": "23/08/2022",
+      "nutriList": [
+        {
+          "name": "chicken",
+          "calories": 222.6,
+          "serving_size_g": 100,
+          "fat_total_g": 12.9,
+          "fat_saturated_g": 3.7,
+          "protein_g": 23.7,
+          "sodium_mg": 72,
+          "potassium_mg": 179,
+          "cholesterol_mg": 92,
+          "carbohydrates_total_g": 0,
+          "fiber_g": 0,
+          "sugar_g": 0
+        }
+      ],
+      "id": 9
+    },
+    {
+      "date": "24/08/2022",
+      "nutriList": [
+        {
+          "name": "chicken",
+          "calories": 222.6,
+          "serving_size_g": 100,
+          "fat_total_g": 12.9,
+          "fat_saturated_g": 3.7,
+          "protein_g": 23.7,
+          "sodium_mg": 72,
+          "potassium_mg": 179,
+          "cholesterol_mg": 92,
+          "carbohydrates_total_g": 0,
+          "fiber_g": 0,
+          "sugar_g": 0
+        },
+        {
+          "name": "chips",
+          "calories": 540.8,
+          "serving_size_g": 100,
+          "fat_total_g": 34.4,
+          "fat_saturated_g": 3.4,
+          "protein_g": 6.4,
+          "sodium_mg": 533,
+          "potassium_mg": 150,
+          "cholesterol_mg": 0,
+          "carbohydrates_total_g": 54.3,
+          "fiber_g": 3.1,
+          "sugar_g": 0.3
+        }
+      ],
+      "id": 10
     }
   ]
 }

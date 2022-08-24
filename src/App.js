@@ -112,7 +112,6 @@ const App = () => {
         );
         const id = toDelete?.id;
         const url = `http://localhost:3001/nutrition_data/${id}`;
-        // console.log(id);
         let updatedNutriList = nutriTableList.filter(
             (item) => item.name !== itemname
         );
@@ -138,51 +137,53 @@ const App = () => {
         const toUpdate = nutritionDBData.find((nutri) => nutri.date === date);
         const id = toUpdate?.id;
         const url = `http://localhost:3001/nutrition_data/${id}`;
-        let updatedNutriList = [...toUpdate?.nutriList];
-        updatedNutriList = [
-            ...new Map(
-                updatedNutriList.map((item) => [item["name"], item])
-            ).values(),
-        ];
 
         const sentData = {
             date,
             nutriList: nutriTableList,
         };
 
-        console.log(nutriTableList);
+        // console.log(nutriTableList);
         axios
             .put(url, sentData)
             .then((response) => {
-                console.log(sentData);
+                console.log("update function ran");
                 setPieChartData(nutriTableList);
             })
             .catch((error) => console.log(error));
     };
 
     const saveTableData = () => {
-        let date = new Date().toLocaleDateString();
-        let alreadyIncluded = nutritionDBData.find(
-            (nutri) => nutri.date === date
-        );
+        // compare if the arrays from the DB and the nutrilist are the samae
+        const compareIfEqual = (a, b) => {
+            return JSON.stringify(a) === JSON.stringify(b);
+        };
 
-        if (alreadyIncluded) {
-            console.log("included");
-            updateTableData(date);
+        const date = new Date().toLocaleDateString();
+        const inNutriDB = nutritionDBData.find((nutri) => nutri.date === date);
+
+        let isEqual = compareIfEqual(inNutriDB?.nutriList, nutriTableList);
+
+        if (nutriTableList.length < 1) {
+            console.log("list empty");
             return;
-        } else if (nutriTableList.length === 0) {
-            return;
-        } else {
-            // whatever is saved in the table gets pushed to the db if it isnt empty
+        } else if (inNutriDB?.date !== date) {
+            console.log("posting to db");
 
             const entry = {
                 date: todaysDate,
                 nutriList: nutriTableList,
             };
-            axios
-                .post(baseURL, entry)
-                .then((response) => console.log(response));
-            toast("Saved");
+            axios.post(baseURL, entry).then((response) => {
+                setPieChartData(nutriTableList);
+                setNutritionDBData((nutritionDBData) =>
+                    nutritionDBData.concat(entry)
+                );
+                toast("Saved");
+            });
+        } else {
+            isEqual ? console.log("no changes made") : updateTableData(date);
+            console.log(compareIfEqual(inNutriDB?.nutriList, nutriTableList));
         }
     };
 
