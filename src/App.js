@@ -107,9 +107,10 @@ const App = () => {
     };
 
     const deleteItem = (itemname) => {
-        const toDelete = nutritionDBData.find(
-            (nutri) => nutri.date === todaysDate
-        );
+        const date = new Date().toLocaleDateString();
+
+        console.log(nutritionDBData);
+        const toDelete = nutritionDBData.find((nutri) => nutri.date === date);
         const id = toDelete?.id;
         const url = `http://localhost:3001/nutrition_data/${id}`;
         let updatedNutriList = nutriTableList.filter(
@@ -121,12 +122,10 @@ const App = () => {
             date: todaysDate,
             nutriList: updatedNutriList,
         };
-        console.log(sentData);
         axios
             .put(url, sentData)
             .then((response) => {
                 setPieChartData(response.data?.nutriList);
-                // pass in the response to the setPieChartData from
             })
             .catch((error) => console.log(error));
         toast("deleted");
@@ -176,9 +175,13 @@ const App = () => {
             };
             axios.post(baseURL, entry).then((response) => {
                 setPieChartData(nutriTableList);
-                setNutritionDBData((nutritionDBData) =>
-                    nutritionDBData.concat(entry)
-                );
+                // let newDBData = nutritionDBData.concat(entry);
+                // console.log(newDBData);
+                setNutritionDBData((nutritionDBData) => [
+                    ...nutritionDBData,
+                    entry,
+                ]);
+                // console.log(nutritionDBData);
                 toast("Saved");
             });
         } else {
@@ -225,8 +228,10 @@ const App = () => {
                             isLoading: false,
                             autoClose: 500,
                         });
-                        setNutriTableList(nutriTableList.concat(response.data));
-                        console.log(response.data);
+                        setNutriTableList((nutriTableList) =>
+                            nutriTableList.concat(response.data)
+                        );
+                        // console.log(response.data);
                     } else {
                         toast.update(id, {
                             render: `${response?.data[0]?.name} already exists`,
@@ -270,6 +275,15 @@ const App = () => {
         const BMI = Math.round((weight / (height / 100) ** 2) * 10) / 10;
         return BMI;
     };
+    const healthStatus = (bmi) => {
+        if (bmi < 18.5) {
+            return `You're Underweight`;
+        } else if (bmi >= 18.5 && bmi <= 24.9) {
+            return `Normal Body Weight`;
+        } else {
+            return `You're Overweight`;
+        }
+    };
     const handleSubmit = (e) => {
         e.preventDefault();
         const details = {
@@ -279,11 +293,13 @@ const App = () => {
             height,
             age: calculateAge(date),
             BMI: calculateBMI(weight, height),
+            healthStatus: healthStatus(calculateBMI(weight, height)),
         };
         setPersonInfo(details);
         setWeight("");
         setHeight("");
         setDate("2000-01-01");
+        console.log(details);
     };
 
     useEffect(() => {
@@ -302,6 +318,8 @@ const App = () => {
             } catch (err) {
                 console.log(err);
             }
+
+            // console.log(0);
         })();
     }, [todaysDate]);
 
@@ -420,6 +438,11 @@ const App = () => {
                                         ? 0
                                         : personInfo.BMI
                                 }
+                                HealthStatus={
+                                    `${personInfo.healthStatus}` === "undefined"
+                                        ? ""
+                                        : personInfo.healthStatus
+                                }
                             />
                         </InfoContainer>
 
@@ -442,7 +465,7 @@ const App = () => {
 
                     <FlexColumn>
                         <Container>
-                            {false && (
+                            {true && (
                                 <PersonForm
                                     handleSexChange={handleSexChange}
                                     handleSubmit={handleSubmit}
