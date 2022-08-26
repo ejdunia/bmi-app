@@ -15,6 +15,8 @@ import DashboardContainer from "./components/styles/DashboardContainer";
 import NutriItem from "./components/NutriItem";
 import CheckboxToggle from "./components/CheckBoxToggle";
 import Toggle2 from "./components/Toggle2";
+// import { Link } from "react-router-dom";
+import Nav from "./components/Nav";
 import {
     Chart as ChartJS,
     ArcElement,
@@ -63,22 +65,6 @@ export const options = {
 };
 
 const App = () => {
-    const dummyData = [
-        {
-            name: "food Name",
-            calories: 0,
-            serving_size_g: 0,
-            fat_total_g: 0,
-            fat_saturated_g: 0,
-            protein_g: 0,
-            sodium_mg: 0,
-            potassium_mg: 0,
-            cholesterol_mg: 0,
-            carbohydrates_total_g: 0,
-            fiber_g: 0,
-            sugar_g: 0,
-        },
-    ];
     const [showQuote1, setShowQuote1] = useState(false);
     const [showQuote2, setShowQuote2] = useState(false);
     const todaysDate = new Date().toLocaleDateString();
@@ -86,7 +72,15 @@ const App = () => {
 
     // todo put the form into one single objeect
 
-    const [personInfo, setPersonInfo] = useState({});
+    const [personInfo, setPersonInfo] = useState({
+        sex: "male",
+        date: "date",
+        weight: 90,
+        height: 190,
+        age: 90,
+        BMI: 24.9,
+        healthStatus: "Normal Body Weight",
+    });
     const [nutriTableList, setNutriTableList] = useState([]);
     const [nutriListEmpty, setNutriListEmpty] = useState(false);
     const [nutritionDBData, setNutritionDBData] = useState([]);
@@ -108,7 +102,6 @@ const App = () => {
 
     const deleteItem = (itemname) => {
         const date = new Date().toLocaleDateString();
-
         console.log(nutritionDBData);
         const toDelete = nutritionDBData.find((nutri) => nutri.date === date);
         const id = toDelete?.id;
@@ -367,13 +360,13 @@ const App = () => {
     };
     const getLineCHartLabels = () => {
         return [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "THursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
+            "12/08/2022",
+            "15/08/2022",
+            "16/08/2022",
+            "17/08/2022",
+            "20/08/2022",
+            "22/08/2022",
+            "23/08/2022",
         ];
     };
     // here i can map the last 7 days chart for calories and stuff
@@ -409,60 +402,7 @@ const App = () => {
         <>
             <MainContainer>
                 <ToastContainer />
-
                 <DashboardContainer>
-                    <FlexColumn>
-                        <InfoContainer>
-                            <MeasurementDiv>
-                                <DataCard
-                                    name={"Height"}
-                                    value={
-                                        `${personInfo.height}` === "undefined"
-                                            ? 0
-                                            : `${personInfo.height} cm`
-                                    }
-                                />
-                                <DataCard
-                                    primary
-                                    name={"Weight"}
-                                    value={
-                                        `${personInfo.weight}` === "undefined"
-                                            ? 0
-                                            : `${personInfo.weight} Kg`
-                                    }
-                                />
-                            </MeasurementDiv>
-                            <BmiInfo
-                                BMI={
-                                    `${personInfo.BMI}` === "undefined"
-                                        ? 0
-                                        : personInfo.BMI
-                                }
-                                HealthStatus={
-                                    `${personInfo.healthStatus}` === "undefined"
-                                        ? ""
-                                        : personInfo.healthStatus
-                                }
-                            />
-                        </InfoContainer>
-
-                        <ChartContainer>
-                            <span></span>
-                            {pieData?.length !== 1 && (
-                                <Doughnut
-                                    data={pieChartData}
-                                    options={{ maintainAspectRatio: false }}
-                                />
-                            )}
-                        </ChartContainer>
-                        <ChartContainer>
-                            <span></span>
-                            <Line options={options} data={data} />
-
-                            {/* maek a weekly table tracker */}
-                        </ChartContainer>
-                    </FlexColumn>
-
                     <FlexColumn>
                         <Container>
                             {true && (
@@ -547,6 +487,7 @@ const App = () => {
                             </StyledTable>
                         </FoodTrackerBox>
                     </FlexColumn>
+                    <Nav />
                 </DashboardContainer>
             </MainContainer>
         </>
