@@ -15,7 +15,7 @@ import DashboardContainer from "./components/styles/DashboardContainer";
 import NutriItem from "./components/NutriItem";
 import CheckboxToggle from "./components/CheckBoxToggle";
 import Toggle2 from "./components/Toggle2";
-// import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Nav from "./components/Nav";
 import {
     Chart as ChartJS,
@@ -37,6 +37,8 @@ import SearchBar from "./components/SearchBar";
 import axios from "axios";
 import ToggleContainer from "./components/ToggleContainer";
 import SaveButton from "./components/SaveButton";
+import LandingPage from "./Pages/LandingPage";
+import LoginPage from "./components/LoginPage";
 const rapidApiKey = process.env.REACT_APP_RAPID_API_KEY;
 
 ChartJS.register(
@@ -65,6 +67,22 @@ export const options = {
 };
 
 const App = () => {
+    const dummyData = [
+        {
+            name: "food Name",
+            calories: 0,
+            serving_size_g: 0,
+            fat_total_g: 0,
+            fat_saturated_g: 0,
+            protein_g: 0,
+            sodium_mg: 0,
+            potassium_mg: 0,
+            cholesterol_mg: 0,
+            carbohydrates_total_g: 0,
+            fiber_g: 0,
+            sugar_g: 0,
+        },
+    ];
     const [showQuote1, setShowQuote1] = useState(false);
     const [showQuote2, setShowQuote2] = useState(false);
     const todaysDate = new Date().toLocaleDateString();
@@ -277,6 +295,7 @@ const App = () => {
             return `You're Overweight`;
         }
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const details = {
@@ -309,7 +328,7 @@ const App = () => {
                 setNutriTableList(toDisplay.nutriList);
                 setPieChartData(toDisplay.nutriList);
             } catch (err) {
-                console.log(err);
+                console.log("an axios error occured");
             }
 
             // console.log(0);
@@ -400,6 +419,19 @@ const App = () => {
 
     return (
         <>
+            <MainContainer>
+                <ToastContainer />
+                <DashboardContainer>
+                        <Nav />
+                        <Routes>
+                            <Route path="/" element={<LandingPage />} />
+                            <Route path="/page2" element={"page 2"} />
+                            <Route path="/page3" element={"page 3"} />
+                            <Route path="*" element={"error page"} />
+                        </Routes>
+                </DashboardContainer>
+            </MainContainer>
+
             <MainContainer>
                 <ToastContainer />
                 <DashboardContainer>
