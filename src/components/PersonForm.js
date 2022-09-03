@@ -4,19 +4,15 @@ import CancelButton from "./CancelButton";
 import FormContainer from "./styles/FormContainer.styled";
 
 const PersonForm = ({
-    handleSexChange,
+    // handleSexChange,
+    formData,
     handleSubmit,
-    height,
-    weight,
-    date,
-    setHeight,
-    setWeight,
-    setDate,
+    handleChange,
 }) => {
     return (
         <div>
             <FormContainer onSubmit={handleSubmit}>
-                <fieldset>
+                {/* <fieldset>
                     <legend>Sex</legend>
                     <label htmlFor="male">
                         Male
@@ -25,7 +21,7 @@ const PersonForm = ({
                             id="male"
                             name="sex"
                             value="male"
-                            onChange={handleSexChange}
+                            onChange={handleChange}
                         />
                     </label>{" "}
                     <label htmlFor="female">
@@ -35,18 +31,19 @@ const PersonForm = ({
                             id="female"
                             name="sex"
                             value="Female"
-                            onChange={handleSexChange}
+                            onChange={handleChange}
                         />
                     </label>{" "}
-                </fieldset>
+                </fieldset> */}
 
                 <label>
                     Birth Date{" "}
                     <input
                         required
-                        onChange={setDate}
-                        value={date}
+                        value={formData?.date}
                         type={"date"}
+                        name="date"
+                        onChange={handleChange}
                     />
                 </label>
                 <div>
@@ -57,8 +54,9 @@ const PersonForm = ({
                             type={"number"}
                             min="10"
                             max="272"
-                            onChange={setHeight}
-                            value={height}
+                            value={formData?.height}
+                            name="height"
+                            onChange={handleChange}
                         />
                     </label>
                     <label>
@@ -68,8 +66,9 @@ const PersonForm = ({
                             min="1"
                             max="635"
                             type={"number"}
-                            onChange={setWeight}
-                            value={weight}
+                            value={formData?.weight}
+                            name="weight"
+                            onChange={handleChange}
                         />
                     </label>
                 </div>

@@ -274,6 +274,65 @@
         }
       ],
       "id": 11
+    },
+    {
+      "date": "01/09/2022",
+      "nutriList": [
+        {
+          "name": "chicken",
+          "calories": 222.6,
+          "serving_size_g": 100,
+          "fat_total_g": 12.9,
+          "fat_saturated_g": 3.7,
+          "protein_g": 23.7,
+          "sodium_mg": 72,
+          "potassium_mg": 179,
+          "cholesterol_mg": 92,
+          "carbohydrates_total_g": 0,
+          "fiber_g": 0,
+          "sugar_g": 0
+        },
+        {
+          "name": "chips",
+          "calories": 540.8,
+          "serving_size_g": 100,
+          "fat_total_g": 34.4,
+          "fat_saturated_g": 3.4,
+          "protein_g": 6.4,
+          "sodium_mg": 533,
+          "potassium_mg": 150,
+          "cholesterol_mg": 0,
+          "carbohydrates_total_g": 54.3,
+          "fiber_g": 3.1,
+          "sugar_g": 0.3
+        }
+      ],
+      "id": 12
+    },
+    {
+      "date": "02/09/2022",
+      "nutriList": [
+        {
+          "name": "chicken",
+          "calories": 222.6,
+          "serving_size_g": 100,
+          "fat_total_g": 12.9,
+          "fat_saturated_g": 3.7,
+          "protein_g": 23.7,
+          "sodium_mg": 72,
+          "potassium_mg": 179,
+          "cholesterol_mg": 92,
+          "carbohydrates_total_g": 0,
+          "fiber_g": 0,
+          "sugar_g": 0
+        }
+      ],
+      "id": 13
+    },
+    {
+      "date": "03/09/2022",
+      "nutriList": [],
+      "id": 14
     }
   ]
 }

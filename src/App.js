@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from "react";
+
+import chartsService from "./services/chartsService";
+import dbService from "./services/dbService";
+import formService from "./services/formService";
+
 import BmiInfo from "./components/BmiInfo";
 import DataCard from "./components/DataCard";
 import PersonForm from "./components/PersonForm";
@@ -15,7 +20,7 @@ import DashboardContainer from "./components/styles/DashboardContainer";
 import NutriItem from "./components/NutriItem";
 import CheckboxToggle from "./components/CheckBoxToggle";
 import Toggle2 from "./components/Toggle2";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav";
 import {
     Chart as ChartJS,
@@ -38,7 +43,7 @@ import axios from "axios";
 import ToggleContainer from "./components/ToggleContainer";
 import SaveButton from "./components/SaveButton";
 import LandingPage from "./Pages/LandingPage";
-import LoginPage from "./components/LoginPage";
+// import LoginPage from "./components/LoginPage";
 const rapidApiKey = process.env.REACT_APP_RAPID_API_KEY;
 
 ChartJS.register(
@@ -83,122 +88,41 @@ const App = () => {
             sugar_g: 0,
         },
     ];
+    const [formData, setFormData] = useState({
+        date: "2000-01-01",
+        sex: "",
+        weight: "",
+        height: "",
+        age: "",
+        BMI: 0,
+        healthStatus: "",
+    });
+    const [bmiInfo, setBmiInfo] = useState({});
+
     const [showQuote1, setShowQuote1] = useState(false);
     const [showQuote2, setShowQuote2] = useState(false);
-    const todaysDate = new Date().toLocaleDateString();
-    const baseURL = `http://localhost:3001/nutrition_data`;
-
-    // todo put the form into one single objeect
-
-    const [personInfo, setPersonInfo] = useState({
-        sex: "male",
-        date: "date",
-        weight: 90,
-        height: 190,
-        age: 90,
-        BMI: 24.9,
-        healthStatus: "Normal Body Weight",
-    });
+    const [labels, setLabels] = useState([]);
     const [nutriTableList, setNutriTableList] = useState([]);
     const [nutriListEmpty, setNutriListEmpty] = useState(false);
     const [nutritionDBData, setNutritionDBData] = useState([]);
-    const [weight, setWeight] = useState("");
-    const [height, setHeight] = useState("");
-    const [date, setDate] = useState("2000-01-01");
-    const [sex, setSex] = useState("");
-
-    //  see commment above
-
     const [barOpened, setBarOpened] = useState(false);
     const [pieData, setPieData] = useState([]);
-
     const [searchInput, setSearchInput] = useState("");
+
+    useEffect(() => {
+        dbService.getDBData().then((response) => {
+            setNutritionDBData(response);
+            setNutriTableList(dbService.toDisplay(response));
+            console.log(dbService.toDisplay(response));
+            setPieData(
+                chartsService.getPieChartData(dbService.toDisplay(response))
+            );
+            setLabels(chartsService.getLineChartLabels(response));
+        });
+    }, [pieData.length]);
 
     const handleSearchInput = (e) => {
         setSearchInput(e.target.value);
-    };
-
-    const deleteItem = (itemname) => {
-        const date = new Date().toLocaleDateString();
-        console.log(nutritionDBData);
-        const toDelete = nutritionDBData.find((nutri) => nutri.date === date);
-        const id = toDelete?.id;
-        const url = `http://localhost:3001/nutrition_data/${id}`;
-        let updatedNutriList = nutriTableList.filter(
-            (item) => item.name !== itemname
-        );
-
-        setNutriTableList(updatedNutriList);
-        const sentData = {
-            date: todaysDate,
-            nutriList: updatedNutriList,
-        };
-        axios
-            .put(url, sentData)
-            .then((response) => {
-                setPieChartData(response.data?.nutriList);
-            })
-            .catch((error) => console.log(error));
-        toast("deleted");
-        console.log(`${itemname} has been deleted`);
-    };
-
-    const updateTableData = (date) => {
-        const toUpdate = nutritionDBData.find((nutri) => nutri.date === date);
-        const id = toUpdate?.id;
-        const url = `http://localhost:3001/nutrition_data/${id}`;
-
-        const sentData = {
-            date,
-            nutriList: nutriTableList,
-        };
-
-        // console.log(nutriTableList);
-        axios
-            .put(url, sentData)
-            .then((response) => {
-                console.log("update function ran");
-                setPieChartData(nutriTableList);
-            })
-            .catch((error) => console.log(error));
-    };
-
-    const saveTableData = () => {
-        // compare if the arrays from the DB and the nutrilist are the samae
-        const compareIfEqual = (a, b) => {
-            return JSON.stringify(a) === JSON.stringify(b);
-        };
-
-        const date = new Date().toLocaleDateString();
-        const inNutriDB = nutritionDBData.find((nutri) => nutri.date === date);
-
-        let isEqual = compareIfEqual(inNutriDB?.nutriList, nutriTableList);
-
-        if (nutriTableList.length < 1) {
-            console.log("list empty");
-            return;
-        } else if (inNutriDB?.date !== date) {
-            console.log("posting to db");
-
-            const entry = {
-                date: todaysDate,
-                nutriList: nutriTableList,
-            };
-            axios.post(baseURL, entry).then((response) => {
-                setPieChartData(nutriTableList);
-                // let newDBData = nutritionDBData.concat(entry);
-                // console.log(newDBData);
-                setNutritionDBData((nutritionDBData) => [
-                    ...nutritionDBData,
-                    entry,
-                ]);
-                // console.log(nutritionDBData);
-                toast("Saved");
-            });
-        } else {
-            isEqual ? console.log("no changes made") : updateTableData(date);
-            console.log(compareIfEqual(inNutriDB?.nutriList, nutriTableList));
-        }
     };
 
     const onSearchFormSubmit = (e) => {
@@ -261,19 +185,6 @@ const App = () => {
             });
     };
 
-    const handleSexChange = (e) => {
-        setSex(e.target.value);
-    };
-    const handleHeight = (e) => {
-        setHeight(e.target.value);
-    };
-
-    const handleWeight = (e) => {
-        setWeight(e.target.value);
-    };
-    const HandleDate = (e) => {
-        setDate(e.target.value);
-    };
     const calculateAge = (date) => {
         const now = new Date();
         date = new Date(date);
@@ -282,10 +193,6 @@ const App = () => {
         return age;
     };
 
-    const calculateBMI = (weight, height) => {
-        const BMI = Math.round((weight / (height / 100) ** 2) * 10) / 10;
-        return BMI;
-    };
     const healthStatus = (bmi) => {
         if (bmi < 18.5) {
             return `You're Underweight`;
@@ -295,63 +202,47 @@ const App = () => {
             return `You're Overweight`;
         }
     };
+    const handleChange = (event) => {
+        const { name, value, type, checked } = event.target;
+        setFormData((prevFormData) => {
+            return {
+                ...prevFormData,
+                [name]: type === "checkbox" ? checked : value,
+            };
+        });
+        setFormData((prevFormData) => {
+            return {
+                ...prevFormData,
+                [name]: type === "checkbox" ? checked : value,
+            };
+        });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const details = {
-            sex,
-            date,
-            weight,
-            height,
-            age: calculateAge(date),
-            BMI: calculateBMI(weight, height),
-            healthStatus: healthStatus(calculateBMI(weight, height)),
+            height: formData.height,
+            weight: formData.weight,
+            age: calculateAge(formData.date),
+            BMI: formService.calculateBMI(formData.weight, formData.height),
+            healthStatus: healthStatus(
+                formService.calculateBMI(formData.weight, formData.height)
+            ),
         };
-        setPersonInfo(details);
-        setWeight("");
-        setHeight("");
-        setDate("2000-01-01");
+        setBmiInfo(details);
+
         console.log(details);
-    };
-
-    useEffect(() => {
-        // IIFE to fetch the data
-        (async () => {
-            try {
-                const res = await axios.get(
-                    `http://localhost:3001/nutrition_data`
-                );
-                setNutritionDBData(res.data);
-                const toDisplay = res.data?.find(
-                    (nutri) => nutri.date === todaysDate
-                );
-                setNutriTableList(toDisplay.nutriList);
-                setPieChartData(toDisplay.nutriList);
-            } catch (err) {
-                console.log("an axios error occured");
-            }
-
-            // console.log(0);
-        })();
-    }, [todaysDate]);
-
-    const setPieChartData = (pieDataArray) => {
-        const val = pieDataArray.reduce(
-            function (previousValue, currentValue) {
-                return {
-                    calories:
-                        previousValue.calories + currentValue.calories + 0,
-                    fat_total_g:
-                        previousValue.fat_total_g +
-                        currentValue.fat_total_g +
-                        0,
-                    protein_g:
-                        previousValue.protein_g + currentValue.protein_g + 0,
-                };
-            },
-            { calories: 0, fat_total_g: 0, protein_g: 0 }
-        );
-        setPieData(Object.values(val));
+        console.log(bmiInfo);
+        setFormData({
+            date: "2000-01-01",
+            sex: "",
+            height: 0,
+            weight: 0,
+            age: "",
+            BMI: 0,
+            healthStatus: "",
+        });
+        console.log(formData);
     };
 
     const pieChartData = {
@@ -361,8 +252,6 @@ const App = () => {
                 label: "# of Votes",
 
                 data: pieData,
-                // data: setTimeout(() => [12, 34, 54], 1000),
-                // data: [12, 34, 56],
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(54, 162, 235, 0.2)",
@@ -377,21 +266,7 @@ const App = () => {
             },
         ],
     };
-    const getLineCHartLabels = () => {
-        return [
-            "12/08/2022",
-            "15/08/2022",
-            "16/08/2022",
-            "17/08/2022",
-            "20/08/2022",
-            "22/08/2022",
-            "23/08/2022",
-        ];
-    };
-    // here i can map the last 7 days chart for calories and stuff
-
-    const labels = getLineCHartLabels();
-
+    // todo map the daily total content for fat carbs etc to data below
     const data = {
         labels,
         datasets: [
@@ -422,31 +297,83 @@ const App = () => {
             <MainContainer>
                 <ToastContainer />
                 <DashboardContainer>
-                        <Nav />
-                        <Routes>
-                            <Route path="/" element={<LandingPage />} />
-                            <Route path="/page2" element={"page 2"} />
-                            <Route path="/page3" element={"page 3"} />
-                            <Route path="*" element={"error page"} />
-                        </Routes>
+                    <Routes>
+                        <Route path="/" element={<LandingPage />} />
+                        <Route
+                            path="/form"
+                            element={
+                                <PersonForm
+                                    formData={formData}
+                                    handleChange={handleChange}
+                                    handleSubmit={handleSubmit}
+                                />
+                            }
+                        />
+                        <Route path="/page3" element={"page 3"} />
+                        <Route path="*" element={"error page"} />
+                    </Routes>
+                    <Nav />
                 </DashboardContainer>
             </MainContainer>
 
             <MainContainer>
                 <ToastContainer />
+
                 <DashboardContainer>
+                    <FlexColumn>
+                        <InfoContainer>
+                            <MeasurementDiv>
+                                <DataCard
+                                    name={"Height"}
+                                    value={
+                                        `${bmiInfo.height}` === "undefined"
+                                            ? 0
+                                            : `${bmiInfo.height} Kg`
+                                    }
+                                />
+                                <DataCard
+                                    primary
+                                    name={"Weight"}
+                                    value={
+                                        `${bmiInfo.weight}` === "undefined"
+                                            ? 0
+                                            : `${bmiInfo.weight} Kg`
+                                    }
+                                />
+                            </MeasurementDiv>
+                            <BmiInfo
+                                BMI={
+                                    `${bmiInfo.BMI}` === "undefined"
+                                        ? 0
+                                        : bmiInfo.BMI
+                                }
+                            />
+                        </InfoContainer>
+
+                        <ChartContainer>
+                            <span></span>
+                            {pieData?.length !== 1 && (
+                                <Doughnut
+                                    data={pieChartData}
+                                    options={{ maintainAspectRatio: false }}
+                                />
+                            )}
+                        </ChartContainer>
+                        <ChartContainer>
+                            <span></span>
+                            <Line options={options} data={data} />
+
+                            {/* maek a weekly table tracker */}
+                        </ChartContainer>
+                    </FlexColumn>
+
                     <FlexColumn>
                         <Container>
                             {true && (
                                 <PersonForm
-                                    handleSexChange={handleSexChange}
+                                    formData={formData}
+                                    handleChange={handleChange}
                                     handleSubmit={handleSubmit}
-                                    weight={weight}
-                                    height={height}
-                                    date={date}
-                                    setDate={HandleDate}
-                                    setHeight={handleHeight}
-                                    setWeight={handleWeight}
                                 />
                             )}
                             <div>
@@ -479,7 +406,16 @@ const App = () => {
                                 input={searchInput}
                                 handleSearchInputChange={handleSearchInput}
                             />
-                            <SaveButton onClick={() => saveTableData()} />
+                            <SaveButton
+                                onClick={() =>
+                                    dbService.saveTableData(
+                                        nutritionDBData,
+                                        nutriTableList,
+                                        setNutritionDBData,
+                                        setPieData
+                                    )
+                                }
+                            />
 
                             <StyledTable>
                                 <thead>
@@ -508,9 +444,12 @@ const App = () => {
                                                   key={item.name}
                                                   item={item}
                                                   handleDelete={() => {
-                                                      deleteItem(
+                                                      dbService.deleteItem(
                                                           item.name,
-                                                          date
+                                                          nutritionDBData,
+                                                          nutriTableList,
+                                                          setNutriTableList,
+                                                          setPieData
                                                       );
                                                   }}
                                               />
@@ -519,7 +458,6 @@ const App = () => {
                             </StyledTable>
                         </FoodTrackerBox>
                     </FlexColumn>
-                    <Nav />
                 </DashboardContainer>
             </MainContainer>
         </>

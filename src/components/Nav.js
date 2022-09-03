@@ -8,20 +8,18 @@ import { Link } from "react-router-dom";
 const Nav = () => {
     return (
         <NavBar>
-            <Link to="/">
+            <Link to="/form">
                 <img src={accountCircle} alt="account" />
             </Link>
             <Link to="">
-                <img src={settingsImage} alt="settings " />
-            </Link>
-            <Link to=''>
-                <img src={info} alt="info" />
-            </Link>
-            <Link to=''>
                 <img src={monitoring} alt="monitoring" />
             </Link>
-            <Link to=''>
-                <img src={accountCircle} alt="account" />
+            <Link to="">
+                <img src={info} alt="info" />
+            </Link>
+
+            <Link to="">
+                <img src={settingsImage} alt="settings " />
             </Link>
         </NavBar>
     );
