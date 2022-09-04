@@ -8,6 +8,7 @@ const Container = styled.div`
     height: 90%;
     margin: auto;
     border: 2px solid red;
+    gap: 30px;
     align-items: center;
     overflow: scroll;
     & > * {

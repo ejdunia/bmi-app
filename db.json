@@ -330,8 +330,23 @@
       "id": 13
     },
     {
-      "date": "03/09/2022",
-      "nutriList": [],
+      "date": "05/09/2022",
+      "nutriList": [
+        {
+          "name": "yam",
+          "calories": 114.6,
+          "serving_size_g": 100,
+          "fat_total_g": 0.1,
+          "fat_saturated_g": 0,
+          "protein_g": 1.5,
+          "sodium_mg": 8,
+          "potassium_mg": 49,
+          "cholesterol_mg": 0,
+          "carbohydrates_total_g": 28,
+          "fiber_g": 3.9,
+          "sugar_g": 0.5
+        }
+      ],
       "id": 14
     }
   ]
