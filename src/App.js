@@ -3,69 +3,29 @@ import React, { useState, useEffect } from "react";
 import chartsService from "./services/chartsService";
 import dbService from "./services/dbService";
 import formService from "./services/formService";
-
-import { Doughnut } from "react-chartjs-2";
-import QuotesCard from "./components/QuotesCard";
-import QuotesCard2 from "./components/QuotesCard2";
-// import { Line } from "react-chartjs-2";
 import DashboardContainer from "./components/styles/DashboardContainer";
-import NutriItem from "./components/NutriItem";
-import CheckboxToggle from "./components/CheckBoxToggle";
-import Toggle2 from "./components/Toggle2";
-import { Routes, Route } from "react-router-dom";
-import Nav from "./components/Nav";
-import {
-    Chart as ChartJS,
-    ArcElement,
-    Tooltip,
-    Legend,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-} from "chart.js";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import MainContainer from "./components/styles/MainContainer";
-import FoodTrackerBox from "./components/styles/FoodTrackerBox";
-import StyledTable from "./components/styles/StyledTable";
-import SearchBar from "./components/SearchBar";
-import axios from "axios";
-import ToggleContainer from "./components/ToggleContainer";
-import SaveButton from "./components/SaveButton";
 import LandingPage from "./Pages/LandingPage";
 import FormAndBmiPage from "./Pages/FormAndBmiPage";
 import ChartsPage from "./Pages/ChartsPage";
 import SettingsPage from "./Pages/SettingsPage";
 import DataContext from "./context/DataContext";
-// import LoginPage from "./components/LoginPage";
+import { Routes, Route } from "react-router-dom";
+import Nav from "./components/Nav";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import MainContainer from "./components/styles/MainContainer";
+import axios from "axios";
+
+import NutriItem from "./components/NutriItem";
+import CheckboxToggle from "./components/CheckBoxToggle";
+import FoodTrackerBox from "./components/styles/FoodTrackerBox";
+import StyledTable from "./components/styles/StyledTable";
+import SearchBar from "./components/SearchBar";
+import SaveButton from "./components/SaveButton";
+
 const rapidApiKey = process.env.REACT_APP_RAPID_API_KEY;
 
-ChartJS.register(
-    ArcElement,
-    Tooltip,
-    Legend,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title
-);
 
-export const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            position: "top",
-        },
-        title: {
-            display: true,
-            text: "Weekly Nutrition Tracker",
-        },
-    },
-};
 
 const App = () => {
     const dummyData = [
@@ -232,7 +192,6 @@ const App = () => {
             ),
         };
         setBmiInfo(details);
-
         // console.log(details);
         // console.log(bmiInfo);
 
@@ -254,7 +213,14 @@ const App = () => {
                 <ToastContainer />
                 <DashboardContainer>
                     <DataContext.Provider
-                        value={{ formData, setFormData, bmiInfo, setBmiInfo }}
+                        value={{
+                            formData,
+                            setFormData,
+                            bmiInfo,
+                            setBmiInfo,
+                            pieData,
+                            labels,
+                        }}
                     >
                         <Routes>
                             <Route path="/" element={<LandingPage />} />

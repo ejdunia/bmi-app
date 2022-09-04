@@ -8,16 +8,15 @@ const NavBar = styled.nav`
     width: auto;
     height: 90%;
     /* border: 2px solid green; */
-
+    margin: 20px;
     img {
-        width: 30px;
+        width: 40px;
     }
 
     @media (max-width: 600px) {
-        /* border: 2px solid red; */
         flex-direction: row;
         width: 90%;
-        height: 30px;
+        height: 40px;
     }
 `;
 

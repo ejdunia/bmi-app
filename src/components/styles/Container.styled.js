@@ -4,14 +4,11 @@ const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
     padding: 10px;
-    box-sizing: border-box;
     width: 90%;
     height: 90%;
     margin: auto;
     border: 2px solid red;
-    align-items:center;
-    justify-content: center;
-    gap:30px;
+    align-items: center;
     overflow: scroll;
     & > * {
         flex-grow: 1;

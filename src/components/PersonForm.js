@@ -40,40 +40,33 @@ const PersonForm = ({ formData, handleSubmit, handleChange }) => {
                         onChange={handleChange}
                     />
                 </label>
-                <div>
-                    <label>
-                        Height (cm):
-                        <input
-                            required
-                            type={"number"}
-                            min="10"
-                            max="272"
-                            value={formData?.height}
-                            name="height"
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <label>
-                        Weight (Kg):
-                        <input
-                            required
-                            min="1"
-                            max="635"
-                            type={"number"}
-                            value={formData?.weight}
-                            name="weight"
-                            onChange={handleChange}
-                        />
-                    </label>
-                </div>
-                <div>
-                    <Button Primary type={"submit"} text={"Calculate"} />
-                    <CancelButton
-                        type={"reset"}
-                        value={"reset"}
-                        text={"Clear"}
+                <label>
+                    Height (cm):
+                    <input
+                        required
+                        type={"number"}
+                        min="10"
+                        max="272"
+                        value={formData?.height}
+                        name="height"
+                        onChange={handleChange}
                     />
-                </div>
+                </label>
+                <label>
+                    Weight (Kg):
+                    <input
+                        required
+                        min="1"
+                        max="635"
+                        type={"number"}
+                        value={formData?.weight}
+                        name="weight"
+                        onChange={handleChange}
+                    />
+                </label>
+
+                <Button Primary type={"submit"} text={"Calculate"} />
+                <CancelButton type={"reset"} value={"reset"} text={"Clear"} />
             </FormContainer>
         </>
     );

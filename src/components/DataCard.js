@@ -13,9 +13,9 @@ const DataCardHolder = styled.div`
     align-items: center;
     padding: 10px;
     margin: 10px;
-    font: 1.2rem Ubuntu, Arial, sans-serif;
     font-weight: 500;
     border-radius: 10px;
+    flex-grow: 1;
     background: ${(props) => (props.primary ? "#f8debd" : "#D0FBFF")};
 `;
 

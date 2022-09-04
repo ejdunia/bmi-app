@@ -1,14 +1,12 @@
 import styled from "styled-components";
 
 const DashboardContainer = styled.div`
-    border: 1px solid red;
     border-radius: 20px;
     margin: 20px;
     width: 70vw;
     height: 90vh;
     display: flex;
     align-items: center;
-    justify-content: space-around;
 
     @media (max-width: 600px) {
         border: 2px solid yellow;

@@ -4,7 +4,7 @@ import StyledButton from "./styles/StyledButton.styled";
 const StyledCancelButton = styled(StyledButton)`
     border-color: tomato;
     color: red;
-    font-weight: bold;
+    font: 1.5rem Ubuntu, Arial, sans-serif;
 `;
 
 const CancelButton = ({ type, value, text }) => {

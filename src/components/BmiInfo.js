@@ -29,6 +29,9 @@ const BMICard = styled.div`
     border-radius: 10px;
     margin: 10px;
     font-weight: 500;
+    display: flex;
+    flex-direction:column;
+    justify-content: space-between;
 `;
 const FLexThis = styled.div`
     display: flex;
