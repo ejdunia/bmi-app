@@ -4,7 +4,7 @@ const MainContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
     background: hsla(205, 46%, 10%, 1);
 
     background: linear-gradient(

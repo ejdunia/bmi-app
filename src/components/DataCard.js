@@ -4,15 +4,17 @@ import Ruler from "./Ruler";
 
 const DataCardHolder = styled.div`
     display: flex;
-    max-width: 250px;
-    height: 90px;
+    width: 90%;
+    height: 150px;
     color: #374151;
+    min-height: fit-content;
     box-sizing: border-box;
+    justify-content: space-evenly;
     align-items: center;
     padding: 10px;
-    /* margin: 10px; */
-    font: 15px Ubuntu, Arial, sans-serif;
-    font-weight: bold;
+    margin: 10px;
+    font: 1.2rem Ubuntu, Arial, sans-serif;
+    font-weight: 500;
     border-radius: 10px;
     background: ${(props) => (props.primary ? "#f8debd" : "#D0FBFF")};
 `;

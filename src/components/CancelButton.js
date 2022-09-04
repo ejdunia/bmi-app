@@ -10,7 +10,6 @@ const StyledCancelButton = styled(StyledButton)`
 const CancelButton = ({ type, value, text }) => {
     return (
         <StyledCancelButton type={type} value={value}>
-            {" "}
             {text}
         </StyledCancelButton>
     );

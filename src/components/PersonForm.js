@@ -1,18 +1,12 @@
 import Button from "./Button";
 import CancelButton from "./CancelButton";
-// import Container from "./styles/Container.styled";
 import FormContainer from "./styles/FormContainer.styled";
 
-const PersonForm = ({
-    // handleSexChange,
-    formData,
-    handleSubmit,
-    handleChange,
-}) => {
+const PersonForm = ({ formData, handleSubmit, handleChange }) => {
     return (
-        <div>
+        <>
             <FormContainer onSubmit={handleSubmit}>
-                {/* <fieldset>
+                <fieldset>
                     <legend>Sex</legend>
                     <label htmlFor="male">
                         Male
@@ -34,7 +28,7 @@ const PersonForm = ({
                             onChange={handleChange}
                         />
                     </label>{" "}
-                </fieldset> */}
+                </fieldset>
 
                 <label>
                     Birth Date{" "}
@@ -81,7 +75,7 @@ const PersonForm = ({
                     />
                 </div>
             </FormContainer>
-        </div>
+        </>
     );
 };
 

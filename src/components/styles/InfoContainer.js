@@ -2,14 +2,25 @@ import styled from "styled-components";
 
 const InfoContainer = styled.div`
     display: flex;
-    flex-wrap: wrap;
-    margin: 10px;
-    border-bottom: 1px solid grey;
-    border-radius: 5px;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    width: 100%;
-    height: 100%
+    height: 100%;
+    gap: 20px;
+    min-height: fit-content;
+    border-radius: 5px;
+    box-sizing: border-box;
+    overflow: scroll;
+    & > div {
+        flex-grow: 1;
+        max-width: 450px;
+    }
+
+    @media (max-height: 375px) {
+        & > * {
+            height: fit-content;
+        }
+        overflow: scroll;
+    }
 `;
 
 export default InfoContainer;

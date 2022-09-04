@@ -20,13 +20,15 @@ const Line = styled.div`
     justify-content: space-between;
 `;
 const BMICard = styled.div`
-    width: 300px;
+    width: 90%;
+    height: auto;
     background-color: #4a4949;
     padding: 15px;
     box-sizing: border-box;
     color: wheat;
     border-radius: 10px;
     margin: 10px;
+    font-weight: 500;
 `;
 const FLexThis = styled.div`
     display: flex;

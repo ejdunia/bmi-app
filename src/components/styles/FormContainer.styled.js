@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
 const FormContainer = styled.form`
-    min-width: 250px;
     padding: 30px;
-    margin-bottom: 10px;
+    font: 1.2rem Ubuntu, Arial, sans-serif;
+    font-weight: 400;
+    height: 90%;
+    min-height: fit-content;
+    max-width: 450px;
     border-radius: 10px;
     background-color: #f8debd;
     color: #1e293b;
@@ -15,21 +18,18 @@ const FormContainer = styled.form`
     input[type="number"],
     input[type="date"] {
         width: 100%;
-        padding: 5px 10px;
-        margin: 8px 0;
+        padding: 7px 5px;
+        margin: 10px 0;
         box-sizing: border-box;
         border: 2px solid tan;
         border-radius: 4px;
-        line-height: 1.5;
+        line-height: 2;
     }
-    & fieldset {
-        margin: 0;
-    }
+
     & > div {
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: center;
+        justify-content: space-around;
     }
     filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
         drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));

@@ -8,17 +8,17 @@ import { Link } from "react-router-dom";
 const Nav = () => {
     return (
         <NavBar>
-            <Link to="/form">
+            <Link to="/form_and_bmi">
                 <img src={accountCircle} alt="account" />
             </Link>
-            <Link to="">
+            <Link to="/charts">
                 <img src={monitoring} alt="monitoring" />
             </Link>
-            <Link to="">
+            <Link to="/">
                 <img src={info} alt="info" />
             </Link>
 
-            <Link to="">
+            <Link to="/settings">
                 <img src={settingsImage} alt="settings " />
             </Link>
         </NavBar>

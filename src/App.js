@@ -4,18 +4,10 @@ import chartsService from "./services/chartsService";
 import dbService from "./services/dbService";
 import formService from "./services/formService";
 
-import BmiInfo from "./components/BmiInfo";
-import DataCard from "./components/DataCard";
-import PersonForm from "./components/PersonForm";
 import { Doughnut } from "react-chartjs-2";
-import InfoContainer from "./components/styles/InfoContainer";
-import MeasurementDiv from "./components/styles/MeasurementDiv";
 import QuotesCard from "./components/QuotesCard";
 import QuotesCard2 from "./components/QuotesCard2";
-import FlexColumn from "./components/styles/FlexColumn";
-import { Line } from "react-chartjs-2";
-import ChartContainer from "./components/styles/ChartContainer";
-import Container from "./components/styles/Container.styled";
+// import { Line } from "react-chartjs-2";
 import DashboardContainer from "./components/styles/DashboardContainer";
 import NutriItem from "./components/NutriItem";
 import CheckboxToggle from "./components/CheckBoxToggle";
@@ -43,6 +35,10 @@ import axios from "axios";
 import ToggleContainer from "./components/ToggleContainer";
 import SaveButton from "./components/SaveButton";
 import LandingPage from "./Pages/LandingPage";
+import FormAndBmiPage from "./Pages/FormAndBmiPage";
+import ChartsPage from "./Pages/ChartsPage";
+import SettingsPage from "./Pages/SettingsPage";
+import DataContext from "./context/DataContext";
 // import LoginPage from "./components/LoginPage";
 const rapidApiKey = process.env.REACT_APP_RAPID_API_KEY;
 
@@ -101,6 +97,12 @@ const App = () => {
 
     const [showQuote1, setShowQuote1] = useState(false);
     const [showQuote2, setShowQuote2] = useState(false);
+
+    const [showQuotes, setShowQuotes] = useState({
+        quote1: false,
+        quote2: false,
+    });
+
     const [labels, setLabels] = useState([]);
     const [nutriTableList, setNutriTableList] = useState([]);
     const [nutriListEmpty, setNutriListEmpty] = useState(false);
@@ -231,8 +233,9 @@ const App = () => {
         };
         setBmiInfo(details);
 
-        console.log(details);
-        console.log(bmiInfo);
+        // console.log(details);
+        // console.log(bmiInfo);
+
         setFormData({
             date: "2000-01-01",
             sex: "",
@@ -245,219 +248,33 @@ const App = () => {
         console.log(formData);
     };
 
-    const pieChartData = {
-        labels: ["Calories", "Fat", "Protien"],
-        datasets: [
-            {
-                label: "# of Votes",
-
-                data: pieData,
-                backgroundColor: [
-                    "rgba(255, 99, 132, 0.2)",
-                    "rgba(54, 162, 235, 0.2)",
-                    "rgba(255, 206, 86, 0.2)",
-                ],
-                borderColor: [
-                    "rgba(255, 99, 132, 1)",
-                    "rgba(54, 162, 235, 1)",
-                    "rgba(255, 206, 86, 1)",
-                ],
-                borderWidth: 1,
-            },
-        ],
-    };
-    // todo map the daily total content for fat carbs etc to data below
-    const data = {
-        labels,
-        datasets: [
-            {
-                label: "Protien",
-                data: [11, 27, 13, 4, 15, 26, 14],
-
-                borderColor: "rgb(255, 99, 132)",
-                backgroundColor: "rgba(255, 99, 132, 0.5)",
-            },
-            {
-                label: "Carbs",
-                data: [14, 15, 17, 12, 16, 19, 12],
-                borderColor: "rgb(53, 162, 235)",
-                backgroundColor: "rgba(53, 162, 235, 0.5)",
-            },
-            {
-                label: "Fat",
-                data: [24, 25, 27, 12, 36, 15, 19],
-                borderColor: "rgb(255, 206, 86, 1)",
-                backgroundColor: "rgba(255, 206, 86, 1)",
-            },
-        ],
-    };
-
     return (
         <>
             <MainContainer>
                 <ToastContainer />
                 <DashboardContainer>
-                    <Routes>
-                        <Route path="/" element={<LandingPage />} />
-                        <Route
-                            path="/form"
-                            element={
-                                <PersonForm
-                                    formData={formData}
-                                    handleChange={handleChange}
-                                    handleSubmit={handleSubmit}
-                                />
-                            }
-                        />
-                        <Route path="/page3" element={"page 3"} />
-                        <Route path="*" element={"error page"} />
-                    </Routes>
+                    <DataContext.Provider
+                        value={{ formData, setFormData, bmiInfo, setBmiInfo }}
+                    >
+                        <Routes>
+                            <Route path="/" element={<LandingPage />} />
+
+                            <Route
+                                path="/form_and_bmi"
+                                element={<FormAndBmiPage />}
+                            />
+
+                            <Route path="/charts" element={<ChartsPage />} />
+                            <Route
+                                path="/settings"
+                                element={<SettingsPage />}
+                            />
+
+                            <Route path="*" element={"error page"} />
+                        </Routes>
+                    </DataContext.Provider>
+
                     <Nav />
-                </DashboardContainer>
-            </MainContainer>
-
-            <MainContainer>
-                <ToastContainer />
-
-                <DashboardContainer>
-                    <FlexColumn>
-                        <InfoContainer>
-                            <MeasurementDiv>
-                                <DataCard
-                                    name={"Height"}
-                                    value={
-                                        `${bmiInfo.height}` === "undefined"
-                                            ? 0
-                                            : `${bmiInfo.height} Kg`
-                                    }
-                                />
-                                <DataCard
-                                    primary
-                                    name={"Weight"}
-                                    value={
-                                        `${bmiInfo.weight}` === "undefined"
-                                            ? 0
-                                            : `${bmiInfo.weight} Kg`
-                                    }
-                                />
-                            </MeasurementDiv>
-                            <BmiInfo
-                                BMI={
-                                    `${bmiInfo.BMI}` === "undefined"
-                                        ? 0
-                                        : bmiInfo.BMI
-                                }
-                            />
-                        </InfoContainer>
-
-                        <ChartContainer>
-                            <span></span>
-                            {pieData?.length !== 1 && (
-                                <Doughnut
-                                    data={pieChartData}
-                                    options={{ maintainAspectRatio: false }}
-                                />
-                            )}
-                        </ChartContainer>
-                        <ChartContainer>
-                            <span></span>
-                            <Line options={options} data={data} />
-
-                            {/* maek a weekly table tracker */}
-                        </ChartContainer>
-                    </FlexColumn>
-
-                    <FlexColumn>
-                        <Container>
-                            {true && (
-                                <PersonForm
-                                    formData={formData}
-                                    handleChange={handleChange}
-                                    handleSubmit={handleSubmit}
-                                />
-                            )}
-                            <div>
-                                <ToggleContainer>
-                                    <CheckboxToggle
-                                        onChange={() =>
-                                            setShowQuote1(!showQuote1)
-                                        }
-                                    />
-                                    <span>Toggle Motivational Quote</span>
-                                </ToggleContainer>
-                                <ToggleContainer>
-                                    <Toggle2
-                                        onToggleChange={() =>
-                                            setShowQuote2(!showQuote2)
-                                        }
-                                    />{" "}
-                                    <span>Toggle Fitness quote</span>
-                                </ToggleContainer>
-                                {showQuote1 && <QuotesCard />}
-
-                                {showQuote2 && <QuotesCard2 />}
-                            </div>
-                        </Container>
-                        <FoodTrackerBox>
-                            <SearchBar
-                                onSearchSubmit={onSearchFormSubmit}
-                                barOpened={barOpened}
-                                setBarOpened={setBarOpened}
-                                input={searchInput}
-                                handleSearchInputChange={handleSearchInput}
-                            />
-                            <SaveButton
-                                onClick={() =>
-                                    dbService.saveTableData(
-                                        nutritionDBData,
-                                        nutriTableList,
-                                        setNutritionDBData,
-                                        setPieData
-                                    )
-                                }
-                            />
-
-                            <StyledTable>
-                                <thead>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>Fat(g)</td>
-                                        <td>Carbs(g)</td>
-                                        <td>Protien(g)</td>
-                                        <td></td>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {nutriListEmpty
-                                        ? dummyData.map((item) => (
-                                              <NutriItem
-                                                  key={item.name}
-                                                  item={item}
-                                                  handleDelete={() => {
-                                                      return;
-                                                  }}
-                                              />
-                                          ))
-                                        : nutriTableList.map((item) => (
-                                              <NutriItem
-                                                  key={item.name}
-                                                  item={item}
-                                                  handleDelete={() => {
-                                                      dbService.deleteItem(
-                                                          item.name,
-                                                          nutritionDBData,
-                                                          nutriTableList,
-                                                          setNutriTableList,
-                                                          setPieData
-                                                      );
-                                                  }}
-                                              />
-                                          ))}
-                                </tbody>
-                            </StyledTable>
-                        </FoodTrackerBox>
-                    </FlexColumn>
                 </DashboardContainer>
             </MainContainer>
         </>
