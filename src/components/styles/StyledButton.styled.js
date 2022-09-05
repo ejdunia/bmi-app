@@ -12,8 +12,8 @@ const StyledButton = styled.button`
     display: inline-flex;
     font-family: system-ui, -apple-system, system-ui, "Helvetica Neue",
         Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    font-weight: 600;
+    font: 1.5rem Ubuntu, Arial, sans-serif;
+    font-weight: 500;
     justify-content: center;
     line-height: 1.25;
     margin: 10px;

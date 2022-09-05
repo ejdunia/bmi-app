@@ -1,20 +1,10 @@
 import Button from "./Button";
 import CancelButton from "./CancelButton";
-// import Container from "./styles/Container.styled";
 import FormContainer from "./styles/FormContainer.styled";
 
-const PersonForm = ({
-    handleSexChange,
-    handleSubmit,
-    height,
-    weight,
-    date,
-    setHeight,
-    setWeight,
-    setDate,
-}) => {
+const PersonForm = ({ formData, handleSubmit, handleChange }) => {
     return (
-        <div>
+        <>
             <FormContainer onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>Sex</legend>
@@ -25,7 +15,7 @@ const PersonForm = ({
                             id="male"
                             name="sex"
                             value="male"
-                            onChange={handleSexChange}
+                            onChange={handleChange}
                         />
                     </label>{" "}
                     <label htmlFor="female">
@@ -35,7 +25,7 @@ const PersonForm = ({
                             id="female"
                             name="sex"
                             value="Female"
-                            onChange={handleSexChange}
+                            onChange={handleChange}
                         />
                     </label>{" "}
                 </fieldset>
@@ -44,45 +34,41 @@ const PersonForm = ({
                     Birth Date{" "}
                     <input
                         required
-                        onChange={setDate}
-                        value={date}
+                        value={formData?.date}
                         type={"date"}
+                        name="date"
+                        onChange={handleChange}
                     />
                 </label>
-                <div>
-                    <label>
-                        Height (cm):
-                        <input
-                            required
-                            type={"number"}
-                            min="10"
-                            max="272"
-                            onChange={setHeight}
-                            value={height}
-                        />
-                    </label>
-                    <label>
-                        Weight (Kg):
-                        <input
-                            required
-                            min="1"
-                            max="635"
-                            type={"number"}
-                            onChange={setWeight}
-                            value={weight}
-                        />
-                    </label>
-                </div>
-                <div>
-                    <Button Primary type={"submit"} text={"Calculate"} />
-                    <CancelButton
-                        type={"reset"}
-                        value={"reset"}
-                        text={"Clear"}
+                <label>
+                    Height (cm):
+                    <input
+                        required
+                        type={"number"}
+                        min="10"
+                        max="272"
+                        value={formData?.height}
+                        name="height"
+                        onChange={handleChange}
                     />
-                </div>
+                </label>
+                <label>
+                    Weight (Kg):
+                    <input
+                        required
+                        min="1"
+                        max="635"
+                        type={"number"}
+                        value={formData?.weight}
+                        name="weight"
+                        onChange={handleChange}
+                    />
+                </label>
+
+                <Button Primary type={"submit"} text={"Calculate"} />
+                <CancelButton type={"reset"} value={"reset"} text={"Clear"} />
             </FormContainer>
-        </div>
+        </>
     );
 };
 

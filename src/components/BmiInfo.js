@@ -20,15 +20,28 @@ const Line = styled.div`
     justify-content: space-between;
 `;
 const BMICard = styled.div`
-    width: 300px;
+    width: 90%;
+    height: auto;
     background-color: #4a4949;
     padding: 15px;
     box-sizing: border-box;
     color: wheat;
     border-radius: 10px;
     margin: 10px;
+    font-weight: 500;
+    display: flex;
+    flex-direction:column;
+    justify-content: space-between;
+`;
+const FLexThis = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 
+const HealthStatusDiv = styled.div`
+    padding: 5px;
+`;
 const Slider = styled.input`
     &[type="range"] {
         -webkit-appearance: none;
@@ -56,13 +69,14 @@ const Slider = styled.input`
     }
 `;
 
-const BmiInfo = ({ BMI }) => {
+const BmiInfo = ({ BMI, HealthStatus }) => {
     return (
         <BMICard>
             <h4>Body Mass Index (BMI) </h4>
-            <div>
+            <FLexThis>
                 <p>{BMI}</p>
-            </div>
+                <HealthStatusDiv>{HealthStatus}</HealthStatusDiv>
+            </FLexThis>
             <label htmlFor="bmi">
                 <Slider
                     type={"range"}
